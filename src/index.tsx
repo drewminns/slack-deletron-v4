@@ -1,8 +1,8 @@
 import React from 'react'
 import { render } from 'react-dom'
 
-function App() {
-  return <div>Hey Billy</div>
-}
+import { App } from './layouts'
+
+import './styles.css'
 
 render(<App />, document.getElementById('root'))

@@ -27,36 +27,13 @@ module.exports = {
         ],
       },
       {
-        test: /\.scss$/i,
-        exclude: /node_modules/,
-        loader: [
-          MiniCssExtractPlugin.loader,
-          {
-            loader: 'css-loader',
-            options: {
-              importLoaders: 1,
-              modules: true,
-            },
-          },
-          'postcss-loader',
-          {
-            loader: 'sass-loader',
-            options: {
-              sourceMap: true,
-            },
-          },
-          {
-            loader: 'sass-resources-loader',
-            options: {
-              resources: ['./src/styles/_variables.scss', './src/styles/_queries.scss'],
-            },
-          },
-        ],
+        test: /\.css$/i,
+        use: ['style-loader', 'postcss-loader'],
       },
     ],
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.jsx', '.scss'],
+    extensions: ['.ts', '.tsx', '.js', '.jsx'],
   },
   plugins: [
     new CleanWebpackPlugin(),

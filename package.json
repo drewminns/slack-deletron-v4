@@ -4,9 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npx vercel dev",
-    "dev": "npx webpack-dev-server --mode development --devtool inline-source-map --hot --open",
+    "predev": "vercel env pull",
+    "dev": "npx webpack-dev-server --mode development --devtool inline-source-map --hot --port $PORT",
     "build": "NODE_ENV=production webpack -p --mode=production --config=webpack.prod.js"
   },
   "prettier": {
@@ -22,12 +21,16 @@
   "dependencies": {
     "@vercel/node": "^1.7.1",
     "axios": "^0.19.2",
+    "clsx": "^1.1.1",
     "dotenv": "^8.2.0",
     "jsonwebtoken": "^8.5.1",
     "node-fetch": "^2.6.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-hook-form": "^6.0.1"
+    "react-hook-form": "^6.0.1",
+    "recoil": "0.0.10",
+    "swr": "^0.2.3",
+    "tailwindcss": "^1.4.6"
   },
   "devDependencies": {
     "@types/jsonwebtoken": "^8.5.0",

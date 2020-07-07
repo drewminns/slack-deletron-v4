@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const dist = path.join(__dirname, 'dist')
 
 module.exports = {
-  entry: ['./client/index.tsx'],
+  entry: ['./src/index.tsx'],
   mode: 'development',
   output: {
     filename: '[name].[hash].js',
@@ -24,47 +24,21 @@ module.exports = {
         ],
       },
       {
-        test: /\.scss$/i,
-        exclude: /node_modules/,
-        loader: [
-          'style-loader',
-          {
-            loader: 'css-loader',
-            options: {
-              importLoaders: 1,
-              modules: {
-                localIdentName: '[name]__[local]',
-              },
-            },
-          },
-          'postcss-loader',
-          {
-            loader: 'sass-loader',
-            options: {
-              sourceMap: true,
-            },
-          },
-          {
-            loader: 'sass-resources-loader',
-            options: {
-              resources: ['./src/styles/_variables.scss', './src/styles/_queries.scss'],
-            },
-          },
-        ],
+        test: /\.css$/i,
+        use: ['style-loader', 'postcss-loader'],
       },
     ],
   },
   devServer: {
-    port: 3000,
     historyApiFallback: true,
     publicPath: '/',
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.jsx', '.scss'],
+    extensions: ['.ts', '.tsx', '.js', '.jsx'],
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './client/index.html',
+      template: './src/index.html',
     }),
   ],
 }

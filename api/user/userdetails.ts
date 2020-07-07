@@ -1,7 +1,7 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 import fetch from 'node-fetch'
 
-import { verifyToken } from '../utils'
+import { verifyToken } from '../../utils'
 import { User, ConversationsList, ChannelResponse, FilteredChannels, UserProfile } from '../../shared'
 
 function filterChannels(channels: ChannelResponse[]): FilteredChannels[] {
