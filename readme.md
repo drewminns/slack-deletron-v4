@@ -14,3 +14,5 @@ Current endpoints include
 To setup Slack oauth locally, install Ngrok and proxy your local port `./ngrok http 3000`.
 Take the URL given and set that url as the REDIRECT_URI in Vercel with `api/auth/redirect` as the path.
 Next, in slack, set the same url as the redirect URL.
+
+Next, have a party
