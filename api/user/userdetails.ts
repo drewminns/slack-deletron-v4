@@ -23,7 +23,7 @@ function cleanProfile(profile: User['user']): UserProfile {
     name: profile.name,
     real_name: profile.profile.real_name_normalized,
     display_name: profile.profile.display_name_normalized,
-    image: profile.profile.image_1024,
+    image: profile.profile.image_72,
     is_admin: profile.is_admin,
     is_owner: profile.is_owner,
   }
@@ -32,7 +32,6 @@ function cleanProfile(profile: User['user']): UserProfile {
 export default verifyToken(async (req: NowRequest, res: NowResponse, userToken: { user: string; token: string }) => {
   try {
     const { token, user } = userToken
-
     const profileRequest = await fetch('https://slack.com/api/users.info?' + new URLSearchParams({ token, user }))
     const channelsRequest = await fetch(
       'https://slack.com/api/conversations.list?' +

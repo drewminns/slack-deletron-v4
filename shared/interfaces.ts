@@ -193,3 +193,11 @@ export interface FilteredChannels {
   creator: string
   created: number
 }
+
+export interface UserDetailsResponse {
+  ok: boolean
+  data: {
+    channels: FilteredChannels
+    profile: UserProfile
+  }
+}

@@ -30,7 +30,7 @@ export default async (req: NowRequest, res: NowResponse) => {
       return
     }
 
-    const token = issueJWT(slackOAuthFetchResponse.access_token, slackOAuthFetchResponse.user_id)
+    const token = issueJWT(slackOAuthFetchResponse.access_token, slackOAuthFetchResponse.authed_user.id)
     const redirectPath = url.format({
       pathname: 'http://localhost:3000',
       query: {

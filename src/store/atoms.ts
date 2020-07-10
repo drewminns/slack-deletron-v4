@@ -1,13 +1,14 @@
 import { atom, RecoilState } from 'recoil'
 
-import { UserProfile } from '../../shared'
+import { UserProfile, FilteredChannels } from '../../shared'
 
-export const token: RecoilState<string> = atom({
-  key: 'token', // unique ID (with respect to other atoms/selectors)
-  default: '', // default value (aka initial value)
-})
+export type UserDetailsState = {
+  token: string
+  profile: UserProfile
+  channels: FilteredChannels[]
+}
 
-export const userProfile: RecoilState<UserProfile | any> = atom({
-  key: 'userProfile', // unique ID (with respect to other atoms/selectors)
+export const userDetailsState: RecoilState<UserDetailsState | any> = atom({
+  key: 'userDetailsState', // unique ID (with respect to other atoms/selectors)
   default: {}, // default value (aka initial value)
 })

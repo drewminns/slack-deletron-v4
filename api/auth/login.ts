@@ -1,7 +1,7 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 import url from 'url'
 
-const { CLIENT_ID, SLACK_OAUTH_URI, SCOPE } = process.env || ''
+const { CLIENT_ID, SCOPE } = process.env || ''
 
 export default async (req: NowRequest, res: NowResponse) => {
   const redirect_url = url.format({
