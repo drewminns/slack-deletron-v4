@@ -2,28 +2,26 @@ import React, { useEffect } from 'react'
 import { useRecoilState } from 'recoil'
 import useSWR from 'swr'
 
-import { loggedIn, token } from '../store'
+import { token } from '../store'
+
+const LOCALSTORAGE_TOKEN_NAME = 'sd-token'
 
 export const Navigation: React.FC = () => {
   const [tokenValue, setTokenValue] = useRecoilState(token)
-  const [loggedInValue, setloggedInValue] = useRecoilState(loggedIn)
 
   useEffect(() => {
     const URLtoken = new URLSearchParams(location.search).get('token')
-    const token = localStorage.getItem('sd-token')
-    if (!loggedInValue) {
+    const token = localStorage.getItem(LOCALSTORAGE_TOKEN_NAME)
+    if (!tokenValue) {
       if (URLtoken) {
         const { protocol, host } = window.location
         window.history.pushState({}, document.title, protocol + '//' + host)
-        localStorage.setItem('sd-token', URLtoken)
+        localStorage.setItem(LOCALSTORAGE_TOKEN_NAME, URLtoken)
         setTokenValue(URLtoken)
-        setloggedInValue(true)
       } else if (token) {
         setTokenValue(token)
-        setloggedInValue(true)
       } else {
         setTokenValue('')
-        setloggedInValue(false)
       }
     }
   }, [tokenValue])
@@ -33,7 +31,7 @@ export const Navigation: React.FC = () => {
       <div className="flex items-center flex-shrink-0 text-white mr-6">
         <h1 className="text-lg">Slack Deletron</h1>
       </div>
-      {!loggedInValue ? (
+      {!tokenValue ? (
         <a href="/api/auth/login" className="bg-purple-700 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded">
           Login
         </a>

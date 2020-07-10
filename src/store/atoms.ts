@@ -1,16 +1,13 @@
-import { atom } from 'recoil'
+import { atom, RecoilState } from 'recoil'
 
-export const token = atom({
+import { UserProfile } from '../../shared'
+
+export const token: RecoilState<string> = atom({
   key: 'token', // unique ID (with respect to other atoms/selectors)
   default: '', // default value (aka initial value)
 })
 
-export const loggedIn = atom({
-  key: 'loggedIn', // unique ID (with respect to other atoms/selectors)
-  default: false, // default value (aka initial value)
-})
-
-export const userProfile = atom({
+export const userProfile: RecoilState<UserProfile | any> = atom({
   key: 'userProfile', // unique ID (with respect to other atoms/selectors)
   default: {}, // default value (aka initial value)
 })

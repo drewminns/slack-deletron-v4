@@ -7,7 +7,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 
 module.exports = {
-  entry: ['./client/index.tsx'],
+  entry: ['./src/index.tsx'],
   mode: 'production',
   output: {
     filename: '[name].[hash].js',
@@ -41,7 +41,7 @@ module.exports = {
       'process.env.NODE_ENV': JSON.stringify('production'),
     }),
     new HtmlWebpackPlugin({
-      template: './client/index.html',
+      template: './src/index.html',
     }),
     new MiniCssExtractPlugin(),
     new webpack.optimize.ModuleConcatenationPlugin(),
