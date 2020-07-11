@@ -254,4 +254,5 @@ export interface FilesListReponse {
   ok: boolean
   paging: PagingResponse
   files: FileResponse[]
+  error?: string
 }

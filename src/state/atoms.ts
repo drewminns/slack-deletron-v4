@@ -20,3 +20,8 @@ export const fetchedFilesState: RecoilState<FilesListReponse | any> = atom({
   key: 'fetchedFiles',
   default: {},
 })
+
+export const fetchedFilesErrorState: RecoilState<string> = atom({
+  key: 'fetchedFilesErrorState',
+  default: '',
+})

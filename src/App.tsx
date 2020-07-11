@@ -3,6 +3,7 @@ import { useRecoilValue } from 'recoil'
 
 import { Navigation } from './components/Navigation'
 import { Form } from './components/Form'
+import { FileDisplay } from './components/FileDisplay'
 import { isLoggedInSelector } from './state'
 
 import useLogin from './hooks/useLogin'
@@ -18,7 +19,12 @@ export const App: React.FC = () => {
   return (
     <>
       <Navigation />
-      {isLoggedIn && <Form />}
+      {isLoggedIn && (
+        <>
+          <Form />
+          <FileDisplay />
+        </>
+      )}
     </>
   )
 }
