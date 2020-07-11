@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { FC } from 'react'
 import { useRecoilValue, useRecoilState } from 'recoil'
 
-import { isLoggedInSelector, userNameSelector, userProfileSelector, userDetailsState } from '../store'
+import { isLoggedInSelector, userNameSelector, userProfileSelector, userDetailsState } from '../state'
 import { LOCALSTORAGE_TOKEN_NAME } from '../hooks/useLogin'
 
-export const Navigation: React.FC = () => {
+export const Navigation: FC = () => {
   const isLoggedIn = useRecoilValue(isLoggedInSelector)
   const username = useRecoilValue(userNameSelector)
   const profileImage = useRecoilValue(userProfileSelector)

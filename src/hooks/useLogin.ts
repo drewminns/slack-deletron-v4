@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useRecoilState } from 'recoil'
 import { UserDetailsResponse } from '../../shared'
-import { userDetailsState } from '../store'
+import { userDetailsState } from '../state'
 
 export const LOCALSTORAGE_TOKEN_NAME = 'sd-token'
 
@@ -38,10 +38,13 @@ export default function useLogin() {
           setUserDetails({ token, profile, channels })
           setLoading(false)
         } else {
+          localStorage.removeItem(LOCALSTORAGE_TOKEN_NAME)
           setError('Login Error')
           setLoading(false)
         }
       } catch (error) {
+        localStorage.removeItem(LOCALSTORAGE_TOKEN_NAME)
+        console.log('error')
         setError(error)
         setLoading(false)
       }

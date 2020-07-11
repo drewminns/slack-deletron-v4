@@ -136,7 +136,7 @@ export interface ChannelResponse {
   num_members: number
   topic: ChannelDetails
   purpose: ChannelDetails
-  user?: string
+  user: string
 }
 
 export interface ChannelDetails {
@@ -179,7 +179,7 @@ export interface ConversationsList {
 }
 
 export interface ChannelFetchResponse {
-  channels: ChannelResponse[]
+  channels: FilteredChannels[]
   ims: IMResponse[]
 }
 
@@ -192,6 +192,8 @@ export interface FilteredChannels {
   is_private: boolean
   creator: string
   created: number
+  is_im: boolean
+  user: string
 }
 
 export interface UserDetailsResponse {

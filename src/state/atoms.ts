@@ -1,11 +1,14 @@
 import { atom, RecoilState } from 'recoil'
 
-import { UserProfile, FilteredChannels } from '../../shared'
+import { UserProfile, FilteredChannels, IMResponse } from '../../shared'
 
 export type UserDetailsState = {
   token: string
   profile: UserProfile
-  channels: FilteredChannels[]
+  channels: {
+    channels: FilteredChannels[]
+    ims: IMResponse[]
+  }
 }
 
 export const userDetailsState: RecoilState<UserDetailsState | any> = atom({

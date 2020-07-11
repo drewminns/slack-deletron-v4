@@ -20,19 +20,18 @@
   "license": "ISC",
   "dependencies": {
     "@vercel/node": "^1.7.1",
-    "axios": "^0.19.2",
     "clsx": "^1.1.1",
-    "dotenv": "^8.2.0",
+    "date-fns": "^2.14.0",
     "jsonwebtoken": "^8.5.1",
     "node-fetch": "^2.6.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-hook-form": "^6.0.1",
     "recoil": "0.0.10",
-    "swr": "^0.2.3",
     "tailwindcss": "^1.4.6"
   },
   "devDependencies": {
+    "@hookform/devtools": "^2.0.1",
     "@types/jsonwebtoken": "^8.5.0",
     "@types/node-fetch": "^2.5.7",
     "@types/react": "^16.9.41",

@@ -2,7 +2,7 @@ import { NowRequest, NowResponse } from '@vercel/node'
 import url from 'url'
 import fetch from 'node-fetch'
 
-import { issueJWT } from '../../utils'
+import { issueJWT } from '../../shared'
 
 const { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, SLACK_OAUTH_URI, CLIENT_URL } = process.env || ''
 

@@ -1,11 +1,18 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 import fetch from 'node-fetch'
 
-import { verifyToken } from '../../utils'
-import { User, ConversationsList, ChannelResponse, FilteredChannels, UserProfile } from '../../shared'
+import {
+  User,
+  ConversationsList,
+  ChannelResponse,
+  FilteredChannels,
+  UserProfile,
+  verifyToken,
+  IMResponse,
+} from '../../shared'
 
 function filterChannels(channels: ChannelResponse[]): FilteredChannels[] {
-  return channels.map(({ id, name, is_channel, is_group, is_archived, is_private, created, creator }) => ({
+  return channels.map(({ id, name, is_channel, user, is_group, is_archived, is_private, created, creator, is_im }) => ({
     id,
     name,
     is_channel,
@@ -14,6 +21,8 @@ function filterChannels(channels: ChannelResponse[]): FilteredChannels[] {
     is_private,
     created,
     creator,
+    is_im,
+    user,
   }))
 }
 
@@ -47,10 +56,36 @@ export default verifyToken(async (req: NowRequest, res: NowResponse, userToken: 
         return
       }
 
+      const channelsList: ChannelResponse[] = []
+      const IMList: IMResponse[] = []
       const channels = filterChannels(channelsData.channels as ChannelResponse[])
-      const profile = cleanProfile(profileData.user)
+      channels.forEach((channel: any) => {
+        if (channel.is_channel) {
+          channelsList.push(channel)
+        } else {
+          IMList.push(channel)
+        }
+      })
 
-      res.status(200).json({ ok: true, data: { channels, profile } })
+      const fetchedIMNames = await IMList.map(async (channel) => {
+        const userRequest = await fetch(
+          'https://slack.com/api/users.info?' + new URLSearchParams({ token, user: channel.user }),
+        )
+        const userInfo: User = await userRequest.json()
+        if (userInfo.ok) {
+          return {
+            ...channel,
+            user_name: userInfo.user.real_name,
+          }
+        }
+      })
+
+      const profile = cleanProfile(profileData.user)
+      Promise.all(fetchedIMNames).then((fetchImResultNames) => {
+        res
+          .status(200)
+          .json({ ok: true, data: { channels: { channels: channelsList, ims: fetchImResultNames }, profile } })
+      })
     })
   } catch (error) {
     res.status(401).json({ ok: false, error })
