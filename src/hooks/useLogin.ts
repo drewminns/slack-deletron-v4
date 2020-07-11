@@ -12,9 +12,10 @@ export default function useLogin() {
   const [userDetails, setUserDetails] = useRecoilState(userDetailsState)
 
   useEffect(() => {
-    const token = localStorage.getItem(LOCALSTORAGE_TOKEN_NAME) || new URLSearchParams(location.search).get('token')
+    const storedToken =
+      localStorage.getItem(LOCALSTORAGE_TOKEN_NAME) || new URLSearchParams(location.search).get('token')
 
-    if (!token) {
+    if (!storedToken) {
       setLoading(false)
       return
     }
@@ -23,18 +24,18 @@ export default function useLogin() {
       try {
         const userProfileFetch = await fetch('/api/user/userdetails', {
           headers: new Headers({
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${storedToken}`,
           }),
         })
         const userProfileData: UserDetailsResponse = await userProfileFetch.json()
 
         if (userProfileData.ok) {
           const {
-            data: { profile, channels },
+            data: { profile, channels, token },
           } = userProfileData
           const { protocol, host } = window.location
           window.history.pushState({}, document.title, protocol + '//' + host)
-          localStorage.setItem(LOCALSTORAGE_TOKEN_NAME, token)
+          localStorage.setItem(LOCALSTORAGE_TOKEN_NAME, storedToken)
           setUserDetails({ token, profile, channels })
           setLoading(false)
         } else {

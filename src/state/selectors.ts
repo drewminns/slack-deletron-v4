@@ -11,6 +11,22 @@ export const isLoggedInSelector: RecoilValueReadOnly<boolean> = selector({
   },
 })
 
+export const tokenSelector: RecoilValueReadOnly<string> = selector({
+  key: 'tokenSelector',
+  get: ({ get }) => {
+    const userDetails: UserDetailsState = get(userDetailsState)
+    return userDetails.token || ''
+  },
+})
+
+export const userIdSelector: RecoilValueReadOnly<string> = selector({
+  key: 'userIdSelector', // unique ID (with respect to other atoms/selectors)
+  get: ({ get }) => {
+    const userDetails: UserDetailsState = get(userDetailsState)
+    return userDetails.profile?.userId || ''
+  },
+})
+
 export const userNameSelector: RecoilValueReadOnly<string> = selector({
   key: 'userNameSelector', // unique ID (with respect to other atoms/selectors)
   get: ({ get }) => {

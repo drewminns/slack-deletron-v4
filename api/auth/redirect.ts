@@ -1,10 +1,10 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 import url from 'url'
-import fetch from 'node-fetch'
+import fetch from 'cross-fetch'
 
 import { issueJWT } from '../../shared'
 
-const { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, SLACK_OAUTH_URI, CLIENT_URL } = process.env || ''
+const { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI } = process.env || ''
 
 const generateSlackOAuthURI = (code: string): string => {
   return url.format({
@@ -29,8 +29,7 @@ export default async (req: NowRequest, res: NowResponse) => {
       res.status(401).json({ ok: false, error: slackOAuthFetchResponse.error })
       return
     }
-
-    const token = issueJWT(slackOAuthFetchResponse.access_token, slackOAuthFetchResponse.authed_user.id)
+    const token = issueJWT(slackOAuthFetchResponse.authed_user.access_token, slackOAuthFetchResponse.authed_user.id)
     const redirectPath = url.format({
       pathname: 'http://localhost:3000',
       query: {

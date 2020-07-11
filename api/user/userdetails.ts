@@ -1,5 +1,5 @@
 import { NowRequest, NowResponse } from '@vercel/node'
-import fetch from 'node-fetch'
+import fetch from 'cross-fetch'
 
 import {
   User,
@@ -81,11 +81,16 @@ export default verifyToken(async (req: NowRequest, res: NowResponse, userToken: 
       })
 
       const profile = cleanProfile(profileData.user)
-      Promise.all(fetchedIMNames).then((fetchImResultNames) => {
-        res
-          .status(200)
-          .json({ ok: true, data: { channels: { channels: channelsList, ims: fetchImResultNames }, profile } })
-      })
+      Promise.all(fetchedIMNames)
+        .then((fetchImResultNames) => {
+          const cleanIMResults = fetchImResultNames.filter((imresult) => imresult)
+          res
+            .status(200)
+            .json({ ok: true, data: { token, channels: { channels: channelsList, ims: cleanIMResults }, profile } })
+        })
+        .catch((error) => {
+          res.status(401).json({ ok: false, error })
+        })
     })
   } catch (error) {
     res.status(401).json({ ok: false, error })

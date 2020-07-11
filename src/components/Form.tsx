@@ -1,15 +1,16 @@
 import React, { FC } from 'react'
-import { useRecoilValue } from 'recoil'
+import { useRecoilValue, useRecoilState } from 'recoil'
 import { useForm } from 'react-hook-form'
-import { DevTool } from '@hookform/devtools'
-import { format, subDays, addDays, parseISO } from 'date-fns'
+import { format, subDays, parseISO } from 'date-fns'
 
-import { channelsSelector } from '../state'
-import { FilteredChannels, IMResponse } from '../../shared'
+import { channelsSelector, userIdSelector, tokenSelector, fetchedFilesState } from '../state'
+
+import { FilesListReponse } from '../../shared/interfaces'
 
 import { DatePicker } from './form/DatePicker'
 import { ChannelSelector } from './form/ChannelSelector'
 import { TypeInputList } from './form/TypeInputList'
+import { generateSearchParams } from '../utils'
 
 export enum FILE_TYPES {
   images = 'Images',
@@ -21,7 +22,10 @@ export enum FILE_TYPES {
 
 export const Form: FC = () => {
   const channels = useRecoilValue(channelsSelector)
-  const { register, handleSubmit, watch, errors, setValue, control } = useForm()
+  const token = useRecoilValue(tokenSelector)
+  const user = useRecoilValue(userIdSelector)
+  const [fetchedFiles, setFetchedFiles] = useRecoilState(fetchedFilesState)
+  const { register, handleSubmit, watch } = useForm()
 
   const types = Object.entries(FILE_TYPES)
 
@@ -29,7 +33,23 @@ export const Form: FC = () => {
   const watchedStartDate = watch('startDate') || format(subDays(parseISO(today), 7), 'yyyy-MM-dd')
   const watchedEndDate = watch('endDate') || today
 
-  const onSubmit = (data: any) => console.log(data)
+  const onSubmit = async (data: any) => {
+    const params = generateSearchParams(data, user, token)
+
+    try {
+      const filesFetch = await fetch('https://slack.com/api/files.list?' + new URLSearchParams(params))
+      const files: FilesListReponse = await filesFetch.json()
+
+      if (files.ok) {
+        setFetchedFiles({
+          files: files.files,
+          paging: files.paging,
+        })
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <div>
@@ -39,7 +59,6 @@ export const Form: FC = () => {
         <DatePicker register={register} today={today} endDateValue={watchedEndDate} startDateValue={watchedStartDate} />
         <input type="submit" />
       </form>
-      <DevTool control={control} />
     </div>
   )
 }

@@ -1,5 +1,5 @@
 import { NowRequest, NowResponse } from '@vercel/node'
-import fetch from 'node-fetch'
+import fetch from 'cross-fetch'
 
 import { User, UserResponse, verifyToken } from '../../shared'
 

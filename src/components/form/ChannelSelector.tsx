@@ -14,15 +14,19 @@ export const ChannelSelector: FC<ChannelSelectorProps> = ({ register, ims, chann
       Channel
     </label>
     <select name="channels" id="channels" ref={register}>
-      <option>All Files</option>
+      <option value="ALL">All Files</option>
       <optgroup label="Channels">
         {channels.map((channel) => (
-          <option key={channel.id}>{channel.name}</option>
+          <option key={channel.id} value={channel.id}>
+            {channel.name}
+          </option>
         ))}
       </optgroup>
       <optgroup label="Direct Messages">
         {ims.map((im) => (
-          <option key={im.id}>{im.user_name}</option>
+          <option key={im.id} value={im.user}>
+            {im.user_name}
+          </option>
         ))}
       </optgroup>
     </select>
