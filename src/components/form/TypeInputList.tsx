@@ -1,5 +1,4 @@
 import React, { FC } from 'react'
-import { FILE_TYPES } from '../Form'
 
 type TypeInputListProps = {
   register: () => any

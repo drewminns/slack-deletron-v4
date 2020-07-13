@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useRecoilState } from 'recoil'
 import { UserDetailsResponse } from '../../shared'
-import { userDetailsState } from '../state'
+import { userDetailsState } from '../state/atoms'
 
 export const LOCALSTORAGE_TOKEN_NAME = 'sd-token'
 

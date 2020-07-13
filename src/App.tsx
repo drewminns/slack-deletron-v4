@@ -1,16 +1,19 @@
 import React from 'react'
-import { useRecoilValue } from 'recoil'
+import { useRecoilValue, useRecoilState } from 'recoil'
 
 import { Navigation } from './components/Navigation'
-import { Form } from './components/Form'
-import { FileDisplay } from './components/FileDisplay'
-import { isLoggedInSelector } from './state'
+import { Form } from './components/form/Form'
+import { FileDisplay } from './components/files/FileDisplay'
+import { FileQueue } from './components/files/FileQueue'
+import { isLoggedInSelector } from './state/selectors'
+import { queuedFilesState } from './state/atoms'
 
 import useLogin from './hooks/useLogin'
 
 export const App: React.FC = () => {
   const res = useLogin()
   const isLoggedIn = useRecoilValue(isLoggedInSelector)
+  const [queuedFiles, setQueuedFiles] = useRecoilState(queuedFilesState)
 
   if (res.loading) {
     return <h1>Loading</h1>
@@ -23,6 +26,7 @@ export const App: React.FC = () => {
         <>
           <Form />
           <FileDisplay />
+          {queuedFiles.length !== 0 && <FileQueue />}
         </>
       )}
     </>

@@ -3,14 +3,15 @@ import { useRecoilValue, useRecoilState } from 'recoil'
 import { useForm } from 'react-hook-form'
 import { format, subDays, parseISO } from 'date-fns'
 
-import { channelsSelector, userIdSelector, tokenSelector, fetchedFilesState, fetchedFilesErrorState } from '../state'
+import { channelsSelector, userIdSelector, tokenSelector } from '../../state/selectors'
+import { fetchedFilesState, fetchedPagesState, applicationErrorState } from '../../state/atoms'
 
-import { FilesListReponse } from '../../shared/interfaces'
+import { FilesListReponse } from '../../../shared/interfaces'
 
-import { DatePicker } from './form/DatePicker'
-import { ChannelSelector } from './form/ChannelSelector'
-import { TypeInputList } from './form/TypeInputList'
-import { generateSearchParams } from '../utils'
+import { DatePicker } from './DatePicker'
+import { ChannelSelector } from './ChannelSelector'
+import { TypeInputList } from './TypeInputList'
+import { generateSearchParams } from '../../utils'
 
 export enum FILE_TYPES {
   images = 'Images',
@@ -26,7 +27,8 @@ export const Form: FC = () => {
   const token = useRecoilValue(tokenSelector)
   const user = useRecoilValue(userIdSelector)
   const [fetchedFiles, setFetchedFiles] = useRecoilState(fetchedFilesState)
-  const [fetchedFilesError, setFetchedFilesError] = useRecoilState(fetchedFilesErrorState)
+  const [fetchedPaging, setFetchedPages] = useRecoilState(fetchedPagesState)
+  const [applicationError, setApplicationError] = useRecoilState(applicationErrorState)
   const { register, handleSubmit, watch } = useForm()
 
   const types = Object.entries(FILE_TYPES)
@@ -43,24 +45,21 @@ export const Form: FC = () => {
       const files: FilesListReponse = await filesFetch.json()
       setIsLoading(false)
       if (files.ok) {
-        setFetchedFiles({
-          files: files.files,
-          paging: files.paging,
-        })
+        setFetchedFiles(files.files)
+        setFetchedPages(files.paging)
       } else {
-        setFetchedFilesError(files.error as string)
+        setApplicationError({ active: true, value: files.error as string })
       }
     } catch (error) {
       setIsLoading(false)
-      setFetchedFilesError(error)
+      setApplicationError({ active: true, value: error })
     }
   }
 
-  console.log(isLoading)
   return (
     <div>
       {isLoading && <p>Loading</p>}
-      {fetchedFilesError.length > 0 && <p>{fetchedFilesError}</p>}
+      {applicationError.active && <p>{applicationError.value}</p>}
       <form onSubmit={handleSubmit(onSubmit)}>
         <ChannelSelector register={register} ims={channels.ims} channels={channels.channels} />
         <TypeInputList register={register} types={types} />

@@ -1,7 +1,8 @@
 import React, { FC } from 'react'
 import { useRecoilValue, useRecoilState } from 'recoil'
 
-import { isLoggedInSelector, userNameSelector, userProfileSelector, userDetailsState } from '../state'
+import { userDetailsState } from '../state/atoms'
+import { isLoggedInSelector, userNameSelector, userProfileSelector } from '../state/selectors'
 import { LOCALSTORAGE_TOKEN_NAME } from '../hooks/useLogin'
 
 export const Navigation: FC = () => {

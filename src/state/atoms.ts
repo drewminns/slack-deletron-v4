@@ -1,6 +1,6 @@
 import { atom, RecoilState } from 'recoil'
 
-import { UserProfile, FilteredChannels, IMResponse, FilesListReponse } from '../../shared'
+import { UserProfile, FilteredChannels, IMResponse, FilesListReponse, FileResponse } from '../../shared'
 
 export type UserDetailsState = {
   token: string
@@ -17,11 +17,31 @@ export const userDetailsState: RecoilState<UserDetailsState | any> = atom({
 })
 
 export const fetchedFilesState: RecoilState<FilesListReponse | any> = atom({
-  key: 'fetchedFiles',
+  key: 'fetchedFilesState',
+  default: [],
+})
+
+export const fetchedPagesState: RecoilState<FilesListReponse | any> = atom({
+  key: 'fetchedPagesFiles',
   default: {},
 })
 
 export const fetchedFilesErrorState: RecoilState<string> = atom({
   key: 'fetchedFilesErrorState',
   default: '',
+})
+
+export const applicationErrorState: RecoilState<any> = atom({
+  key: 'applicationErrorState',
+  default: { value: '', active: false },
+})
+
+export const deleteFileSizeState: RecoilState<number> = atom({
+  key: 'deleteFileSizeState',
+  default: 0,
+})
+
+export const queuedFilesState: RecoilState<FileResponse[] | any> = atom({
+  key: 'queuedFilesState',
+  default: [],
 })
