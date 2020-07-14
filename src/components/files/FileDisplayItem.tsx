@@ -3,7 +3,7 @@ import { fromUnixTime, format } from 'date-fns'
 import { useRecoilState } from 'recoil'
 
 import { formatBytes } from '../../utils'
-import { queuedFilesState } from '../../state/atoms'
+import { queuedFilesState } from '../../state'
 
 import { FileResponse } from '../../../shared'
 

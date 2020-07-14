@@ -1,18 +1,23 @@
 import React, { FC } from 'react'
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { useRecoilState } from 'recoil'
 
 import { FileResponse } from '../../../shared'
-import { fetchedFilesState, applicationErrorState, deleteFileSizeState } from '../../state/atoms'
-import { tokenSelector } from '../../state/selectors'
+import { fetchedFilesState, deleteFileSizeState } from '../../state'
+import { useDeleteFiles } from '../../hooks/useDeleteFiles'
 
 import { FileDisplayItem } from './FileDisplayItem'
 import { formatBytes } from '../../utils'
 
+async function wait(ms: number) {
+  return new Promise((resolve: any) => {
+    setTimeout(resolve, ms)
+  })
+}
+
 export const FileDisplay: FC = () => {
-  const [fetchedFiles, setFetchedFiles] = useRecoilState(fetchedFilesState)
-  const [applicationError, setApplicationError] = useRecoilState(applicationErrorState)
-  const [deletedFileSize, setDeletedFileSize] = useRecoilState(deleteFileSizeState)
-  const token = useRecoilValue(tokenSelector)
+  const [fetchedFiles] = useRecoilState(fetchedFilesState)
+  const [deletedFileSize] = useRecoilState(deleteFileSizeState)
+  const { deleteAll, deleteFile, isLoading } = useDeleteFiles(fetchedFiles)
 
   if (!Object.keys(fetchedFiles).length) {
     return null
@@ -20,27 +25,11 @@ export const FileDisplay: FC = () => {
 
   const sizeTotal = formatBytes(fetchedFiles.reduce((a: any, b: any) => a + b.size, 0))
 
-  const deleteFile = async (id: string, size: number) => {
-    try {
-      const deleteFileFetch = await fetch(
-        'https://slack.com/api/files.delete?' + new URLSearchParams({ token, file: id }),
-      )
-      const deletedFile = await deleteFileFetch.json()
-      if (deletedFile.ok) {
-        setFetchedFiles(fetchedFiles.filter((file: any) => file.id !== id))
-        setDeletedFileSize(deletedFileSize + size)
-      } else {
-        setApplicationError({ active: true, value: deletedFile.error })
-      }
-    } catch (error) {
-      setApplicationError({ active: true, value: error })
-    }
-  }
-
   return (
     <main>
       <h2>Total File Size: {sizeTotal}</h2>
       <h3>Saved: {formatBytes(deletedFileSize)}</h3>
+      <button onClick={deleteAll}>Delete All</button>
       <ul>
         {fetchedFiles.map((file: FileResponse) => (
           <li key={file.id}>

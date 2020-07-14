@@ -1,11 +1,9 @@
 import React, { FC, useState } from 'react'
-import { useRecoilValue, useRecoilState } from 'recoil'
+import { useRecoilState } from 'recoil'
 import { useForm } from 'react-hook-form'
 import { format, subDays, parseISO } from 'date-fns'
 
-import { channelsSelector, userIdSelector, tokenSelector } from '../../state/selectors'
-import { fetchedFilesState, fetchedPagesState, applicationErrorState } from '../../state/atoms'
-
+import { fetchedFilesState, fetchedPagesState, applicationErrorState, userDetailsState } from '../../state'
 import { FilesListReponse } from '../../../shared/interfaces'
 
 import { DatePicker } from './DatePicker'
@@ -23,11 +21,9 @@ export enum FILE_TYPES {
 
 export const Form: FC = () => {
   const [isLoading, setIsLoading] = useState(false)
-  const channels = useRecoilValue(channelsSelector)
-  const token = useRecoilValue(tokenSelector)
-  const user = useRecoilValue(userIdSelector)
   const [fetchedFiles, setFetchedFiles] = useRecoilState(fetchedFilesState)
   const [fetchedPaging, setFetchedPages] = useRecoilState(fetchedPagesState)
+  const [userDetails] = useRecoilState(userDetailsState)
   const [applicationError, setApplicationError] = useRecoilState(applicationErrorState)
   const { register, handleSubmit, watch } = useForm()
 
@@ -37,7 +33,7 @@ export const Form: FC = () => {
   const watchedEndDate = watch('endDate') || today
 
   const onSubmit = async (data: any) => {
-    const params = generateSearchParams(data, user, token)
+    const params = generateSearchParams(data, userDetails.profile.userId, userDetails.token)
 
     try {
       setIsLoading(true)
@@ -61,7 +57,7 @@ export const Form: FC = () => {
       {isLoading && <p>Loading</p>}
       {applicationError.active && <p>{applicationError.value}</p>}
       <form onSubmit={handleSubmit(onSubmit)}>
-        <ChannelSelector register={register} ims={channels.ims} channels={channels.channels} />
+        <ChannelSelector register={register} ims={userDetails.channels.ims} channels={userDetails.channels.channels} />
         <TypeInputList register={register} types={types} />
         <DatePicker register={register} today={today} endDateValue={watchedEndDate} startDateValue={watchedStartDate} />
         <input type="submit" />

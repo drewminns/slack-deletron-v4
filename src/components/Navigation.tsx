@@ -1,14 +1,10 @@
 import React, { FC } from 'react'
-import { useRecoilValue, useRecoilState } from 'recoil'
+import { useRecoilState } from 'recoil'
 
-import { userDetailsState } from '../state/atoms'
-import { isLoggedInSelector, userNameSelector, userProfileSelector } from '../state/selectors'
+import { userDetailsState } from '../state'
 import { LOCALSTORAGE_TOKEN_NAME } from '../hooks/useLogin'
 
 export const Navigation: FC = () => {
-  const isLoggedIn = useRecoilValue(isLoggedInSelector)
-  const username = useRecoilValue(userNameSelector)
-  const profileImage = useRecoilValue(userProfileSelector)
   const [userDetails, setUserDetails] = useRecoilState(userDetailsState)
 
   const handleLogout = () => {
@@ -21,14 +17,14 @@ export const Navigation: FC = () => {
       <div className="flex items-center flex-shrink-0 text-white mr-6">
         <h1 className="text-lg">Slack Deletron</h1>
       </div>
-      {!isLoggedIn ? (
+      {!userDetails.token ? (
         <a href="/api/auth/login" className="bg-purple-700 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded">
           Login
         </a>
       ) : (
         <>
-          <p className="text-white">{username}</p>
-          <img src={profileImage} alt={username} />
+          <p className="text-white">{userDetails.profile.real_name}</p>
+          <img src={userDetails.profile.image} alt={userDetails.profile.real_name} />
           <button
             className="bg-purple-700 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded"
             onClick={handleLogout}

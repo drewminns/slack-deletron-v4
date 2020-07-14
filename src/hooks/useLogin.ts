@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react'
 import { useRecoilState } from 'recoil'
 import { UserDetailsResponse } from '../../shared'
-import { userDetailsState } from '../state/atoms'
+import { userDetailsState, applicationErrorState } from '../state'
 
 export const LOCALSTORAGE_TOKEN_NAME = 'sd-token'
 
 export default function useLogin() {
   const [loading, setLoading] = useState<boolean>(true)
-  const [error, setError] = useState<string>('')
 
+  const [applicationError, setApplicationError] = useRecoilState(applicationErrorState)
   const [userDetails, setUserDetails] = useRecoilState(userDetailsState)
 
   useEffect(() => {
@@ -40,13 +40,12 @@ export default function useLogin() {
           setLoading(false)
         } else {
           localStorage.removeItem(LOCALSTORAGE_TOKEN_NAME)
-          setError('Login Error')
+          setApplicationError({ active: true, value: 'Login Error' })
           setLoading(false)
         }
       } catch (error) {
         localStorage.removeItem(LOCALSTORAGE_TOKEN_NAME)
-        console.log('error')
-        setError(error)
+        setApplicationError({ active: true, value: error })
         setLoading(false)
       }
     }
@@ -55,6 +54,5 @@ export default function useLogin() {
 
   return {
     loading,
-    error,
   }
 }
