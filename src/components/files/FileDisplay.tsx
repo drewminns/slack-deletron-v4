@@ -1,44 +1,64 @@
 import React, { FC } from 'react'
 import { useRecoilState } from 'recoil'
+import styled from 'styled-components'
+import { cssVar } from 'polished'
 
 import { FileResponse } from '../../../shared'
-import { fetchedFilesState, deleteFileSizeState } from '../../state'
+import { fetchedFilesState, queuedFilesState } from '../../state'
 import { useDeleteFiles } from '../../hooks/useDeleteFiles'
 
 import { FileDisplayItem } from './FileDisplayItem'
-import { formatBytes } from '../../utils'
-
-async function wait(ms: number) {
-  return new Promise((resolve: any) => {
-    setTimeout(resolve, ms)
-  })
-}
 
 export const FileDisplay: FC = () => {
   const [fetchedFiles] = useRecoilState(fetchedFilesState)
-  const [deletedFileSize] = useRecoilState(deleteFileSizeState)
-  const { deleteAll, deleteFile, isLoading } = useDeleteFiles(fetchedFiles)
+  const [queuedFiles, setQueuedFiles] = useRecoilState(queuedFilesState)
+  const { deleteFile } = useDeleteFiles(fetchedFiles)
 
   if (!Object.keys(fetchedFiles).length) {
     return null
   }
 
-  const sizeTotal = formatBytes(fetchedFiles.reduce((a: any, b: any) => a + b.size, 0))
+  const handleAddToQueue = (file: FileResponse) => {
+    setQueuedFiles([...queuedFiles, file])
+  }
 
   return (
-    <main>
-      <h2>Total File Size: {sizeTotal}</h2>
-      <h3>Saved: {formatBytes(deletedFileSize)}</h3>
-      <button onClick={deleteAll}>Delete All</button>
-      <ul>
-        {fetchedFiles.map((file: FileResponse) => (
-          <li key={file.id}>
-            <FileDisplayItem file={file} handleDelete={deleteFile} />
-          </li>
-        ))}
-      </ul>
-    </main>
+    <FileDisplayWrapper>
+      <FileDisplayItems>
+        <FileDisplayList>
+          {fetchedFiles.map((file: FileResponse) => (
+            <FileDisplayListItem key={file.id}>
+              <FileDisplayItem file={file} handleDelete={deleteFile} />
+            </FileDisplayListItem>
+          ))}
+        </FileDisplayList>
+      </FileDisplayItems>
+    </FileDisplayWrapper>
   )
 }
 
 FileDisplay.displayName = 'File Display Section'
+
+const FileDisplayWrapper = styled.div`
+  flex: 1;
+`
+
+const FileDisplayHeader = styled.header`
+  padding: 25px;
+  background: var(--color-grey);
+`
+
+const FileDisplayItems = styled.div``
+
+const FileDisplayList = styled.ul`
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+`
+
+const FileDisplayListItem = styled.li`
+  margin-bottom: 20px;
+`

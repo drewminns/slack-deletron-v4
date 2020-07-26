@@ -1,19 +1,20 @@
 import React, { FC } from 'react'
 
+import { Checkbox } from '../common/Checkbox'
+import { Title } from '../common/Title'
+
 type TypeInputListProps = {
   register: () => any
   types: any[]
 }
 
 export const TypeInputList: FC<TypeInputListProps> = ({ register, types }: TypeInputListProps) => (
-  <div className="pb-2">
+  <>
+    <Title>File Types</Title>
     {types.map((type) => (
-      <label key={type[0]} htmlFor={type[0]}>
-        <input type="checkbox" id={type[0]} ref={register} name={type[0]} />
-        {type[1]}
-      </label>
+      <Checkbox handleClick={register} name={type[0]} key={type[0]} label={type[1]} />
     ))}
-  </div>
+  </>
 )
 
 TypeInputList.displayName = 'Type Input List'

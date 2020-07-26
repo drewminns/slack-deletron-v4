@@ -1,40 +1,57 @@
 import React, { FC } from 'react'
 import { useRecoilState } from 'recoil'
+import styled from 'styled-components'
+import { darken, transitions, size, rem, lighten, cssVar } from 'polished'
 
 import { userDetailsState } from '../state'
-import { LOCALSTORAGE_TOKEN_NAME } from '../hooks/useLogin'
 
 export const Navigation: FC = () => {
-  const [userDetails, setUserDetails] = useRecoilState(userDetailsState)
-
-  const handleLogout = () => {
-    setUserDetails({})
-    localStorage.removeItem(LOCALSTORAGE_TOKEN_NAME)
-  }
+  const [userDetails] = useRecoilState(userDetailsState)
 
   return (
-    <header className="flex items-center justify-between flex-wrap bg-black p-6">
-      <div className="flex items-center flex-shrink-0 text-white mr-6">
-        <h1 className="text-lg">Slack Deletron</h1>
-      </div>
-      {!userDetails.token ? (
-        <a href="/api/auth/login" className="bg-purple-700 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded">
-          Login
-        </a>
-      ) : (
-        <>
-          <p className="text-white">{userDetails.profile.real_name}</p>
-          <img src={userDetails.profile.image} alt={userDetails.profile.real_name} />
-          <button
-            className="bg-purple-700 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded"
-            onClick={handleLogout}
-          >
-            Logout
-          </button>
-        </>
-      )}
-    </header>
+    <HeaderComponent>
+      <HeaderLogo>slack deletron</HeaderLogo>
+      {!userDetails.token && <HeaderLink href="/api/auth/login">Login with Slack</HeaderLink>}
+    </HeaderComponent>
   )
 }
 
 Navigation.displayName = 'Navigation'
+
+const HeaderComponent = styled.header`
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  padding: 25px;
+  height: var(--hs);
+`
+
+const HeaderLogo = styled.h1`
+  font-weight: 700;
+  font-size: ${rem(27, 10)};
+  color: var(--color-darker);
+  position: relative;
+  margin: 0;
+  letter-spacing: -0.03em;
+`
+
+const HeaderLink = styled.a`
+  display: inline-block;
+  text-decoration: none;
+  font-size: 1.7rem;
+  background-color: var(--color-purple);
+  color: var(--color-white);
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+  ${transitions(['box-shadow', 'background-color'], '0.1s ease-in')};
+
+  &:hover {
+    background-color: ${(props) => darken(0.2, props.theme.light.colors.purple)};
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+  }
+`
