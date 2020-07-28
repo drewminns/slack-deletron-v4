@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useRecoilState } from 'recoil'
+import { useSetRecoilState } from 'recoil'
 import { UserDetailsResponse } from '../../shared'
 import { userDetailsState, applicationErrorState } from '../state'
 
@@ -8,8 +8,8 @@ export const LOCALSTORAGE_TOKEN_NAME = 'sd-token'
 export default function useLogin() {
   const [loading, setLoading] = useState<boolean>(true)
 
-  const [applicationError, setApplicationError] = useRecoilState(applicationErrorState)
-  const [userDetails, setUserDetails] = useRecoilState(userDetailsState)
+  const setApplicationError = useSetRecoilState(applicationErrorState)
+  const setUserDetails = useSetRecoilState(userDetailsState)
 
   useEffect(() => {
     const storedToken =

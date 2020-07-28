@@ -42,6 +42,7 @@ export const Form: FC = () => {
 
     try {
       setIsLoading(true)
+      const params: any = { token: userDetails.token, user: userDetails.profile.userId }
       const filesFetch = await fetch('https://slack.com/api/files.list?' + new URLSearchParams(params))
       const files: FilesListReponse = await filesFetch.json()
       setIsLoading(false)
@@ -83,7 +84,7 @@ export const Form: FC = () => {
           )}
         </FormRow>
         <FormRow>
-          <Button handleClick={onSubmit}>Submit</Button>
+          <Button onClick={onSubmit}>Submit</Button>
           {isLoading && <p>Loading</p>}
         </FormRow>
       </form>

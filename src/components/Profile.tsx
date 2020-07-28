@@ -14,6 +14,7 @@ export const Profile: React.FC = () => {
     setUserDetails({})
     localStorage.removeItem(LOCALSTORAGE_TOKEN_NAME)
   }
+
   return (
     <ProfileWrapper>
       <ProfileImage src={userDetails.profile.image} alt={userDetails.profile.real_name} />
@@ -37,7 +38,7 @@ const ProfileWrapper = styled.div`
 const ProfileName = styled.p`
   font-weight: 700;
   color: var(--color-darker);
-  margin: 0 ${rem(20, 10)} ${rem(8, 10)} 0;
+  margin: 0 ${rem(20, 10)} 0;
 `
 const ProfileImage = styled.img`
   ${size(50)};

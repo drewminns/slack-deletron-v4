@@ -40,8 +40,3 @@ export const deleteFileSizeState: RecoilState<number> = atom({
   key: 'deleteFileSizeState',
   default: 0,
 })
-
-export const queuedFilesState: RecoilState<FileResponse[] | any> = atom({
-  key: 'queuedFilesState',
-  default: [],
-})

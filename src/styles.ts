@@ -1,27 +1,19 @@
 import { createGlobalStyle } from 'styled-components'
-import { normalize, darken, lighten } from 'polished'
+import { normalize, darken, lighten, rem } from 'polished'
 
 export const theme = {
   fontFamily: '"Inter", sans-serif',
-  br: '4px',
-  fontSize: '15px',
-  fontSizeSmall: '12px',
-  itemSpace: '8px',
-  light: {
-    colors: {
-      light: '#F6F9FC',
-      white: '#FFFFFF',
-      lilac: '#8B79F1',
-      green: '#76A48C',
-      blue: '#017BFF',
-      yellow: '#FEDC0A',
-      orange: '#EB200C',
-      pink: '#FB97B5',
-      purple: '#2727FE',
-      black: '#1D1D1D',
-      grey: '#babcbf',
-      darker: '#2f2f2f',
-    },
+  fontSize: '14px',
+  fontSizeLG: '16px',
+  fontSizeXXL: '56px',
+  fontSizeXL: '42px',
+  fontSizeSM: '12px',
+  colors: {
+    black: '#000000',
+    orange: '#FF5F31',
+    blue: '#00339B',
+    white: '#ffffff',
+    grey: '#E5E5E5',
   },
 }
 
@@ -35,26 +27,17 @@ export const GlobalStyle = createGlobalStyle`
 
   :root {
     --hs: 100px;
-    --br: ${theme.br};
-    --item-space: ${theme.itemSpace};
-    --size-font: ${theme.fontSize};
-    --size-font-small: ${theme.fontSizeSmall};
-    --color-light: ${theme.light.colors.light};
-    --color-white: ${theme.light.colors.white};
-    --color-lilac: ${theme.light.colors.lilac};
-    --color-green: ${theme.light.colors.green};
-    --color-blue: ${theme.light.colors.blue};
-    --color-yellow: ${theme.light.colors.yellow};
-    --color-orange: ${theme.light.colors.orange};
-    --color-pink: ${theme.light.colors.pink};
-    --color-purple: ${theme.light.colors.purple};
-    --color-purple-dark: ${darken(0.5, theme.light.colors.purple)};
-    --color-purple-light: ${lighten(0.08, theme.light.colors.purple)};
-    --color-black: ${theme.light.colors.black};
-    --color-grey: ${theme.light.colors.grey};
-    --color-darker: ${theme.light.colors.darker};
-    --font-family: ${theme.fontFamily};
-    --border-radius: ${theme.br};
+    --ff: ${theme.fontFamily};
+    --fs: ${theme.fontSize};
+    --fs-lg: ${rem(theme.fontSizeLG, 10)};
+    --fs-xxl: ${rem(theme.fontSizeXXL, 10)};
+    --fs-xl: ${rem(theme.fontSizeXL, 10)};
+    --fs-sm: ${rem(theme.fontSizeSM, 10)};
+    --black: ${theme.colors.black};
+    --orange: ${theme.colors.orange};
+    --blue: ${theme.colors.blue};
+    --white: ${theme.colors.white};
+    --grey: ${theme.colors.grey};
   }
 
   html {
@@ -64,8 +47,8 @@ export const GlobalStyle = createGlobalStyle`
 
   body {
     font-family: var(--font-family, ${theme.fontFamily});
-    font-size: var(--size-font-small, ${theme.fontSizeSmall});
-    color: var(--color-black, ${theme.light.colors.black});
-    background-color: var(--color-light);
+    font-size: var(--fs, ${theme.fontSize});
+    color: var(--color-black, ${theme.colors.black});
+    line-height: 1.24;
   }
 `

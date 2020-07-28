@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, ReactNode } from 'react'
 import styled from 'styled-components'
 
 enum ElementTypes {
@@ -10,7 +10,7 @@ enum ElementTypes {
 }
 
 type TitleProps = {
-  children: string
+  children: ReactNode
   type?: keyof typeof ElementTypes
 }
 
@@ -31,19 +31,31 @@ export const Title: FC<TitleProps> = ({ children, type = 'p' }: TitleProps) => {
 
 Title.displayName = 'Title'
 
+const BaseStyles = `
+  text-transform: uppercase;
+  font-weight: 400;
+  line-height: 1.2;
+  margin: 0;
+  letter-spacing: 0.11em;
+`
+
 const TitleH1 = styled.h1`
-  color: var(--color-darker);
+  ${BaseStyles}
+  font-size: var(--fs-xxl);
 `
 const TitleH2 = styled.h2`
-  color: var(--color-darker);
+  ${BaseStyles}
+  font-size: var(--fs-xl);
 `
 const TitleH3 = styled.h3`
-  color: var(--color-darker);
+  ${BaseStyles}
+  font-size: var(--fs-lg);
 `
 const TitleH4 = styled.h4`
-  color: var(--color-darker);
+  ${BaseStyles}
+  font-size: var(--fs);
 `
 const Titlep = styled.p`
-  font-weight: 700;
-  color: var(--color-darker);
+  ${BaseStyles}
+  font-size: var(--fs);
 `

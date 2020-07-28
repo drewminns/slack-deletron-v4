@@ -1,14 +1,8 @@
 import { useState } from 'react'
-import { useRecoilState } from 'recoil'
+import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil'
 
 import { FileResponse } from '../../shared'
-import {
-  queuedFilesState,
-  applicationErrorState,
-  deleteFileSizeState,
-  fetchedFilesState,
-  userDetailsState,
-} from '../state'
+import { applicationErrorState, deleteFileSizeState, fetchedFilesState, userDetailsState } from '../state'
 
 async function wait(ms: number) {
   return new Promise((resolve: any) => {
@@ -19,11 +13,10 @@ async function wait(ms: number) {
 const DELETE_ENDPOINT = 'https://slack.com/api/files.delete?'
 
 export const useDeleteFiles = (fileArray: FileResponse[]) => {
-  const [applicationError, setApplicationError] = useRecoilState(applicationErrorState)
+  const setApplicationError = useSetRecoilState(applicationErrorState)
+  const userDetails = useRecoilValue(userDetailsState)
   const [deletedFileSize, setDeletedFileSize] = useRecoilState(deleteFileSizeState)
-  const [queuedFiles, setQueuedFiles] = useRecoilState(queuedFilesState)
   const [fetchedFiles, setFetchedFiles] = useRecoilState(fetchedFilesState)
-  const [userDetails] = useRecoilState(userDetailsState)
   const [isLoading, setIsLoading] = useState(false)
 
   const { token } = userDetails
@@ -34,7 +27,6 @@ export const useDeleteFiles = (fileArray: FileResponse[]) => {
       const deletedFile = await deleteFileFetch.json()
       if (deletedFile.ok) {
         setFetchedFiles(fetchedFiles.filter((file: any) => file.id !== id))
-        setQueuedFiles(queuedFiles.filter((file: FileResponse) => file.id !== id))
         setDeletedFileSize(deletedFileSize + size)
       } else {
         setApplicationError({ active: true, value: deletedFile.error })
@@ -67,7 +59,6 @@ export const useDeleteFiles = (fileArray: FileResponse[]) => {
     }
 
     setDeletedFileSize(deletedFileSize + deletedFileSizeBatch)
-    setQueuedFiles(queuedFiles.filter((file: FileResponse) => !deletedItems.includes(file.id)))
     setFetchedFiles(fetchedFiles.filter((file: FileResponse) => !deletedItems.includes(file.id)))
     setIsLoading(false)
   }
