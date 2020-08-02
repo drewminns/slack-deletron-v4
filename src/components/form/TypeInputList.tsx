@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
+import styled from 'styled-components'
 
 import { Checkbox } from '../common/Checkbox'
-import { Title } from '../common/Title'
 
 type TypeInputListProps = {
   register: () => any
@@ -18,3 +18,10 @@ export const TypeInputList: FC<TypeInputListProps> = ({ register, types }: TypeI
 )
 
 TypeInputList.displayName = 'Type Input List'
+
+const Title = styled.p`
+  font-size: var(--fs);
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+`

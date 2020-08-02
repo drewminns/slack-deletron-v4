@@ -1,14 +1,16 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import styled, { css } from 'styled-components'
 
 type ButtonProps = {
-  children: string
+  children: ReactNode
   color?: string
+  icon?: ReactNode
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
-export const Button: React.FC<ButtonProps> = ({ children, onClick, color = 'black' }: ButtonProps) => (
+export const Button: React.FC<ButtonProps> = ({ children, onClick, color = 'black', icon }: ButtonProps) => (
   <ButtonEl color={color} onClick={onClick}>
+    {icon && <Icon>{icon}</Icon>}
     {children}
   </ButtonEl>
 )
@@ -20,11 +22,13 @@ const ButtonEl = styled.button`
   border: none;
   padding: 14px 40px;
   text-transform: uppercase;
-  color: var(--white);
+  color: ${(props) => (props.color === 'white' ? 'var(--black)' : 'var(--white)')};
   border-radius: 50px;
   letter-spacing: 0.1em;
   font-size: var(--fs-sm);
   letter-spacing: 0.11em;
+  display: flex;
+  align-items: center;
   ${(props) =>
     props.color &&
     css`
@@ -34,4 +38,8 @@ const ButtonEl = styled.button`
   &:hover {
     opacity: 0.8;
   }
+`
+
+const Icon = styled.div`
+  margin-right: 12px;
 `

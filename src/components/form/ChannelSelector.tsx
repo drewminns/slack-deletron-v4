@@ -1,5 +1,6 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
+import chevronUrl from '../../assets/chevron.svg'
 
 import { FilteredChannels, IMResponse } from '../../../shared'
 import { Label } from '../common/Label'
@@ -36,17 +37,21 @@ export const ChannelSelector: FC<ChannelSelectorProps> = ({ register, ims, chann
 ChannelSelector.displayName = 'Channel Selector'
 
 const ChannelSelect = styled.select`
-  border-radius: var(--br);
-  padding: 5px;
+  appearance: none;
+  padding: 7px 15px 7px 10px;
   width: 100%;
-  text-transform: lowercase;
-  letter-spacing: 0.05em;
-  font-size: var(--size-font-small);
-  border: 1px solid var(--color-purple);
+  letter-spacing: 0.11em;
+  font-size: var(--fs);
+  color: var(--white);
+  background-color: var(--black);
+  border: 1px solid var(--white);
   position: relative;
+  background-image: url(${chevronUrl});
+  background-repeat: no-repeat;
+  background-position: 96% center;
 
   &:focus,
   &:active {
-    border: 1px solid var(--color-purple);
+    border: 1px solid var(--grey);
   }
 `

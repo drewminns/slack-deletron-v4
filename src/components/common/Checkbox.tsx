@@ -27,9 +27,8 @@ const CheckboxInput = styled.input`
   margin: 0;
   cursor: pointer;
   display: inline-block;
-  background-color: var(--color-white);
-  border: 1px solid var(--color-purple);
-  border-radius: var(--br);
+  background-color: var(--black);
+  border: 1px solid var(--white);
   transition: background 0.3s, border-color 0.3s;
   ${size(18)};
 
@@ -37,11 +36,11 @@ const CheckboxInput = styled.input`
     content: '';
     display: block;
     position: absolute;
-    border: 2px solid var(--color-white);
-    height: 7px;
-    width: 3px;
+    border: 1px solid var(--black);
+    height: 10px;
+    width: 4px;
     left: 6px;
-    top: 3px;
+    top: 0px;
     border-left: 0;
     border-top: 0;
     transform: rotate(40deg);
@@ -49,20 +48,18 @@ const CheckboxInput = styled.input`
   }
 
   &:checked {
-    border: 1px solid var(--color-purple);
+    border: 1px solid var(--white);
     &:after {
-      border-color: var(--color-darker);
+      border-color: var(--white);
     }
   }
 `
 
 const CheckboxLabel = styled.label`
   margin-left: 5px;
-  font-size: var(--size-font-small);
+  font-size: var(--fs);
   display: inline-block;
-  letter-spacing: 0.05em;
   padding: 4px 5px 6px;
-  font-size: var(--size-font-small);
   margin-top: 2px;
 `
 

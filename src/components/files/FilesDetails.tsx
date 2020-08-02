@@ -4,21 +4,24 @@ import styled from 'styled-components'
 
 import { fetchedFilesState, fetchedPagesState, deleteFileSizeState } from '../../state'
 import { useDeleteFiles } from '../../hooks/useDeleteFiles'
+import { ReactComponent as Filter } from '../../assets/filter.svg'
 
 import { Title } from '../common/Title'
 import { Button } from '../common/Button'
 
 import { formatBytes } from '../../utils'
+import { FormState } from '../Files'
 
-export const FilesDetails: FC = () => {
+type FilesDetailsProps = {
+  handleFilterToggle: (val: boolean) => void
+  formState: FormState
+}
+
+export const FilesDetails: FC<FilesDetailsProps> = ({ handleFilterToggle }: FilesDetailsProps) => {
   const fetchedFiles = useRecoilValue(fetchedFilesState)
   const { total } = useRecoilValue(fetchedPagesState)
   const deletedFileSize = useRecoilValue(deleteFileSizeState)
   const { deleteAll } = useDeleteFiles(fetchedFiles)
-
-  if (!Object.keys(fetchedFiles).length) {
-    return null
-  }
 
   const { amount, unit } = formatBytes(fetchedFiles.reduce((a: any, b: any) => a + b.size, 0))
   const deletedAmount = formatBytes(deletedFileSize)
@@ -26,7 +29,9 @@ export const FilesDetails: FC = () => {
     <Wrapper>
       <Container>
         <Separator>
-          <Button onClick={() => {}}>Filters</Button>
+          <Button onClick={() => handleFilterToggle(true)} icon={<Filter />}>
+            Filters
+          </Button>
         </Separator>
         <Title type="h3">All Files</Title>
       </Container>

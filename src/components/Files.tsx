@@ -9,6 +9,7 @@ import { fetchedFilesState, applicationErrorState, fetchedPagesState, userDetail
 
 import { FileList } from './files/FileList'
 import { FilesDetails } from './files/FilesDetails'
+import { Form } from './form/Form'
 
 export const generateSearchParams = (formdata: any, user: string, token: string) => {
   let types = ''
@@ -34,21 +35,34 @@ export const generateSearchParams = (formdata: any, user: string, token: string)
   return new URLSearchParams({ ...params, types })
 }
 
+export type FormState = {
+  channels: string
+  endDate: string
+  gdocs: boolean
+  images: boolean
+  pdfs: boolean
+  snippets: boolean
+  spaces: boolean
+  startDate: string
+}
+
 export const Files: FC = () => {
   const [loading, isLoading] = useState<boolean>(true)
+  const [formState, setFormState] = useState<FormState | any>({})
+  const [filtersShown, toggleFilters] = useState<boolean>(false)
   const setFetchedPages = useSetRecoilState(fetchedPagesState)
   const [fetchedFiles, setFetchedFiles] = useRecoilState(fetchedFilesState)
   const setApplicationError = useSetRecoilState(applicationErrorState)
   const userDetails = useRecoilValue(userDetailsState)
 
   const fetchFiles = async (data?: any) => {
+    setFormState(data)
     const params = generateSearchParams(data, userDetails.profile.userId, userDetails.token)
 
     try {
       const filesFetch = await fetch('https://slack.com/api/files.list?' + new URLSearchParams(params))
       const files: FilesListReponse = await filesFetch.json()
       if (files.ok) {
-        console.log(files)
         setFetchedFiles(files.files)
         setFetchedPages(files.paging)
         isLoading(false)
@@ -68,7 +82,10 @@ export const Files: FC = () => {
     <FileWrapper>
       {!loading && (
         <>
-          <FilesDetails />
+          {filtersShown ? (
+            <Form handleForm={fetchFiles} handleFilterToggle={toggleFilters} formState={formState} />
+          ) : null}
+          <FilesDetails handleFilterToggle={toggleFilters} formState={formState} />
           <FileList files={fetchedFiles} />
         </>
       )}

@@ -3,6 +3,7 @@ import { fromUnixTime, format } from 'date-fns'
 import styled from 'styled-components'
 import { useRecoilValue } from 'recoil'
 
+import { ReactComponent as Close } from '../../assets/close.svg'
 import { formatBytes } from '../../utils'
 import { Button } from '../common/Button'
 import { Title } from '../common/Title'
@@ -59,7 +60,7 @@ export const FileDisplayItem: FC<FileDisplayItemProps> = ({ file, handleDelete }
           </ItemDetails>
         </div>
       </ItemContent>
-      <div>
+      <ItemActions>
         {filetyperegex.test(file.mimetype) == true && (
           <ItemLink href={file.url_private} target="_blank" rel="noopener noreferrer">
             View File
@@ -70,12 +71,12 @@ export const FileDisplayItem: FC<FileDisplayItemProps> = ({ file, handleDelete }
         </ItemLink>
         {handleDelete && (
           <>
-            <Button color={'orange'} onClick={() => handleDelete(file.id, file.size)}>
+            <Button color={'orange'} icon={<Close />} onClick={() => handleDelete(file.id, file.size)}>
               Delete File
             </Button>
           </>
         )}
-      </div>
+      </ItemActions>
     </ItemEl>
   )
 }
@@ -146,4 +147,9 @@ const ItemLink = styled.a`
   font-size: var(--fs-sm);
   color: var(--black);
   margin-right: 25px;
+`
+
+const ItemActions = styled.div`
+  display: flex;
+  align-items: center;
 `

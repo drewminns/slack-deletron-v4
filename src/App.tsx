@@ -1,7 +1,6 @@
 import React from 'react'
 import { useRecoilValue } from 'recoil'
 import styled from 'styled-components'
-import { rem } from 'polished'
 
 import { Navigation } from './components/Navigation'
 import { Loading } from './components/Loading'
