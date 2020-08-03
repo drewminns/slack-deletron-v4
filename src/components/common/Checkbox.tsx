@@ -32,6 +32,10 @@ const CheckboxInput = styled.input`
   transition: background 0.3s, border-color 0.3s;
   ${size(18)};
 
+  &:focus {
+    border-color: var(--orange);
+  }
+
   &:after {
     content: '';
     display: block;
@@ -49,6 +53,11 @@ const CheckboxInput = styled.input`
 
   &:checked {
     border: 1px solid var(--white);
+
+    &:focus {
+      border-color: var(--orange);
+    }
+
     &:after {
       border-color: var(--white);
     }

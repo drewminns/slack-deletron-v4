@@ -1,5 +1,5 @@
 import { createGlobalStyle } from 'styled-components'
-import { normalize, darken, lighten, rem } from 'polished'
+import { normalize, rem } from 'polished'
 
 export const theme = {
   fontFamily: '"Inter", sans-serif',
@@ -8,6 +8,7 @@ export const theme = {
   fontSizeXXL: '56px',
   fontSizeXL: '42px',
   fontSizeSM: '12px',
+  fontSizeXS: '11px',
   colors: {
     black: '#000000',
     orange: '#FF5F31',
@@ -33,6 +34,7 @@ export const GlobalStyle = createGlobalStyle`
     --fs-xxl: ${rem(theme.fontSizeXXL, 10)};
     --fs-xl: ${rem(theme.fontSizeXL, 10)};
     --fs-sm: ${rem(theme.fontSizeSM, 10)};
+    --fs-xs: ${rem(theme.fontSizeXS, 10)};
     --black: ${theme.colors.black};
     --orange: ${theme.colors.orange};
     --blue: ${theme.colors.blue};
@@ -49,6 +51,6 @@ export const GlobalStyle = createGlobalStyle`
     font-family: var(--font-family, ${theme.fontFamily});
     font-size: var(--fs, ${theme.fontSize});
     color: var(--color-black, ${theme.colors.black});
-    line-height: 1.24;
+    line-height: 1.7;
   }
 `

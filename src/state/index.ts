@@ -40,3 +40,14 @@ export const deleteFileSizeState: RecoilState<number> = atom({
   key: 'deleteFileSizeState',
   default: 0,
 })
+
+export type FormState = {
+  channels: string
+  endDate: string
+  gdocs: boolean
+  images: boolean
+  pdfs: boolean
+  snippets: boolean
+  spaces: boolean
+  startDate: string
+}

@@ -49,9 +49,10 @@ const ChannelSelect = styled.select`
   background-image: url(${chevronUrl});
   background-repeat: no-repeat;
   background-position: 96% center;
+  outline: none;
 
   &:focus,
   &:active {
-    border: 1px solid var(--grey);
+    border: 1px solid var(--orange);
   }
 `

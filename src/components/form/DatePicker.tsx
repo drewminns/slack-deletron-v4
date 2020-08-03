@@ -2,6 +2,8 @@ import React, { FC } from 'react'
 import styled from 'styled-components'
 import { format, subDays, addDays, parseISO } from 'date-fns'
 
+import calUrl from '../../assets/cal.svg'
+
 type DatePickerProps = {
   today: string
   endDateValue: string
@@ -66,6 +68,18 @@ padding: 5px 10px;
 width: 100%;
 letter-spacing: 0.11em;
 font-size: var(--fs);
+outline: none;
+
+  &:focus,
+  &:active {
+    border: 1px solid var(--orange);
+  }
+
+  &::-webkit-calendar-picker-indicator {
+    background-image: url(${calUrl});
+    font-size:1.2rem;
+    margin-left:5px;
+  }
 `
 
 const Title = styled.p`

@@ -166,7 +166,7 @@ export interface IMResponse {
   user: string
   is_user_deleted: boolean
   priority: number
-  user_name?: string
+  user_name: string
 }
 
 export interface ConversationsList {

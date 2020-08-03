@@ -3,11 +3,12 @@ import { useRecoilValue } from 'recoil'
 import { useForm } from 'react-hook-form'
 import { format, subDays, parseISO } from 'date-fns'
 import styled from 'styled-components'
+import FocusLock from 'react-focus-lock'
 
 import { userDetailsState } from '../../state'
 import { ReactComponent as Close } from '../../assets/close.svg'
 
-import { FormState } from '../Files'
+import { FormState } from '../../state'
 import { DatePicker } from './DatePicker'
 import { ChannelSelector } from './ChannelSelector'
 import { TypeInputList } from './TypeInputList'
@@ -22,13 +23,13 @@ export enum FILE_TYPES {
 }
 
 type FormProps = {
-  handleForm: (data?: any) => Promise<void>
-  handleFilterToggle: (val: boolean) => void
+  handleFormSubmit: (data?: any) => Promise<void>
+  toggleFormVisibility: (val: boolean) => void
   formState: FormState
 }
 
-export const Form: FC<FormProps> = ({ handleForm, handleFilterToggle, formState }: FormProps) => {
-  const userDetails = useRecoilValue(userDetailsState)
+export const Form: FC<FormProps> = ({ handleFormSubmit, toggleFormVisibility, formState }: FormProps) => {
+  const { channels } = useRecoilValue(userDetailsState)
   const { register, handleSubmit, watch } = useForm({
     defaultValues: formState,
   })
@@ -38,18 +39,18 @@ export const Form: FC<FormProps> = ({ handleForm, handleFilterToggle, formState 
   const watchedEndDate = watch('endDate') || today
 
   const onSubmit = (data: any) => {
-    handleForm(data)
-    handleFilterToggle(false)
+    handleFormSubmit(data)
+    toggleFormVisibility(false)
   }
 
   const handleToggle = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault()
-    handleFilterToggle(false)
+    toggleFormVisibility(false)
   }
 
   const onDown = (ev: any) => {
     if (ev.keyCode === 27) {
-      handleFilterToggle(false)
+      toggleFormVisibility(false)
     }
   }
 
@@ -59,38 +60,36 @@ export const Form: FC<FormProps> = ({ handleForm, handleFilterToggle, formState 
   })
 
   return (
-    <FormWrapper>
-      <FormContainer>
-        <Title type="h3">Filter Slack Files</Title>
-        <FormEl onSubmit={handleSubmit(onSubmit)}>
-          <FormRow>
-            <ChannelSelector
-              register={register}
-              ims={userDetails.channels.ims}
-              channels={userDetails.channels.channels}
-            />
-          </FormRow>
-          <FormRow>
-            <TypeInputList register={register} types={Object.entries(FILE_TYPES)} />
-          </FormRow>
-          <FormRow>
-            <DatePicker
-              register={register}
-              today={today}
-              endDateValue={watchedEndDate}
-              startDateValue={watchedStartDate}
-            />
-          </FormRow>
-          <FormRow>
-            <FormButton type="submit" value="Apply Filters" />
-          </FormRow>
-        </FormEl>
-        <FormClose onClick={handleToggle}>
-          <FormCloseText>Close</FormCloseText>
-          <Close />
-        </FormClose>
-      </FormContainer>
-    </FormWrapper>
+    <FocusLock>
+      <FormWrapper>
+        <FormContainer>
+          <Title type="h3">Filter Slack Files</Title>
+          <FormEl onSubmit={handleSubmit(onSubmit)}>
+            <FormRow>
+              <ChannelSelector register={register} ims={channels.ims} channels={channels.channels} />
+            </FormRow>
+            <FormRow>
+              <TypeInputList register={register} types={Object.entries(FILE_TYPES)} />
+            </FormRow>
+            <FormRow>
+              <DatePicker
+                register={register}
+                today={today}
+                endDateValue={watchedEndDate}
+                startDateValue={watchedStartDate}
+              />
+            </FormRow>
+            <FormRow>
+              <FormButton type="submit" value="Apply Filters" />
+            </FormRow>
+          </FormEl>
+          <FormClose onClick={handleToggle} data-autoFocus>
+            <FormCloseText>Close</FormCloseText>
+            <Close />
+          </FormClose>
+        </FormContainer>
+      </FormWrapper>
+    </FocusLock>
   )
 }
 
@@ -113,6 +112,7 @@ const FormContainer = styled.div`
   height: 100%;
   padding: 70px 45px;
   position: relative;
+  overflow-y: auto;
 `
 
 const FormEl = styled.form`
@@ -126,12 +126,12 @@ const FormRow = styled.div`
 const FormButton = styled.input`
   appearance: none;
   border: none;
-  padding: 14px 40px;
+  padding: 10px 30px;
   text-transform: uppercase;
   color: var(--black);
   border-radius: 50px;
   letter-spacing: 0.1em;
-  font-size: var(--fs-sm);
+  font-size: var(--fs-xs);
   letter-spacing: 0.11em;
   display: flex;
   align-items: center;

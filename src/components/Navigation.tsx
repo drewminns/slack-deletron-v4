@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { useRecoilState } from 'recoil'
 import styled from 'styled-components'
-import { darken, transitions, size, rem, lighten, cssVar } from 'polished'
+import { size, rem } from 'polished'
 
 import { userDetailsState } from '../state'
 import { LOCALSTORAGE_TOKEN_NAME } from '../hooks/useLogin'
@@ -39,7 +39,7 @@ const HeaderComponent = styled.header`
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  padding: 25px;
+  padding: 12px 25px;
   width: 100%;
 `
 
@@ -55,7 +55,7 @@ const ProfileName = styled.p`
 const ProfileImage = styled.img`
   ${size(50)};
   margin-right: ${rem(28, 10)};
-  border-radius: var(--br);
+  border-radius: 5px;
 `
 
 const ProfileDetails = styled.div`

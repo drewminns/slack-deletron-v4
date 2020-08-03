@@ -102,17 +102,9 @@ const ItemEl = styled.li`
     background-color: var(--grey);
   }
 
-  &:first-child {
-    padding-top: 15px;
-    :before {
-      position: absolute;
-      content: '';
-      display: block;
-      width: 90%;
-      left: 5%;
-      top: 0;
-      height: 1px;
-      background-color: var(--grey);
+  &:last-child {
+    &:after {
+      display: none;
     }
   }
 `

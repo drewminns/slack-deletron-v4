@@ -20,12 +20,12 @@ Button.displayName = 'Button'
 const ButtonEl = styled.button`
   appearance: none;
   border: none;
-  padding: 14px 40px;
+  padding: 10px 30px;
   text-transform: uppercase;
   color: ${(props) => (props.color === 'white' ? 'var(--black)' : 'var(--white)')};
   border-radius: 50px;
   letter-spacing: 0.1em;
-  font-size: var(--fs-sm);
+  font-size: var(--fs-xs);
   letter-spacing: 0.11em;
   display: flex;
   align-items: center;
