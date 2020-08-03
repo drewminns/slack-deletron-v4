@@ -11,7 +11,7 @@ import { Button } from './components/common/Button'
 import { Footer } from './components/Footer'
 import { About } from './components/About'
 
-import { userDetailsState, fetchedFilesState, fetchedPagesState, formState } from './state'
+import { userDetailsState, fetchedFilesState, formState } from './state'
 
 import useDeleteFiles from './hooks/useDeleteFiles'
 import useLogin from './hooks/useLogin'
@@ -22,7 +22,6 @@ export const App: React.FC = () => {
   const [aboutVisible, toggleAboutVisibility] = useState<boolean>(false)
 
   const { token } = useRecoilValue(userDetailsState)
-  const pages = useRecoilValue(fetchedPagesState)
   const formData = useRecoilValue(formState)
   const fetchedFiles = useRecoilValue(fetchedFilesState)
 

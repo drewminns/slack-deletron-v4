@@ -2,7 +2,16 @@ import { useState } from 'react'
 import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil'
 
 import { FileResponse } from '../../shared'
-import { applicationErrorState, deleteFileSizeState, fetchedFilesState, userDetailsState } from '../state'
+import {
+  applicationErrorState,
+  deleteFileSizeState,
+  fetchedFilesState,
+  userDetailsState,
+  fetchedPagesState,
+  formState,
+} from '../state'
+
+import useFetchFiles from './useFetchFiles'
 
 async function wait(ms: number) {
   return new Promise((resolve: any) => {
@@ -12,13 +21,16 @@ async function wait(ms: number) {
 
 const DELETE_ENDPOINT = 'https://slack.com/api/files.delete?'
 
-export default useDeleteFiles(fileArray: FileResponse[]) {
+export default function useDeleteFiles(fileArray: FileResponse[]) {
   const setApplicationError = useSetRecoilState(applicationErrorState)
   const userDetails = useRecoilValue(userDetailsState)
   const [deletedFileSize, setDeletedFileSize] = useRecoilState(deleteFileSizeState)
   const [fetchedFiles, setFetchedFiles] = useRecoilState(fetchedFilesState)
+  const { page, pages } = useRecoilValue(fetchedPagesState)
+  const formData = useRecoilValue(formState)
   const [isDeleting, setIsDeleting] = useState(false)
 
+  const { fetchFiles } = useFetchFiles()
   const { token } = userDetails
 
   const deleteFile = async (id: string, size: number) => {
@@ -61,6 +73,9 @@ export default useDeleteFiles(fileArray: FileResponse[]) {
     setDeletedFileSize(deletedFileSize + deletedFileSizeBatch)
     setFetchedFiles(fetchedFiles.filter((file: FileResponse) => !deletedItems.includes(file.id)))
     setIsDeleting(false)
+    if (page < pages) {
+      fetchFiles(formData, page + 1)
+    }
   }
 
   return {

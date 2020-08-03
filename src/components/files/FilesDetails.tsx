@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect } from 'react'
 import { useRecoilValue } from 'recoil'
 import styled from 'styled-components'
 
@@ -25,7 +25,7 @@ export const FilesDetails: FC<FilesDetailsProps> = ({ toggleFormVisibility }: Fi
   const { total } = useRecoilValue(fetchedPagesState)
   const formData = useRecoilValue(formState)
 
-  const { deleteAll } = useDeleteFiles(fetchedFiles)
+  const { deleteAll, isDeleting } = useDeleteFiles(fetchedFiles)
 
   const { amount, unit } = formatBytes(fetchedFiles.reduce((a: any, b: any) => a + b.size, 0))
   const deletedAmount = formatBytes(deletedFileSize)
@@ -93,11 +93,13 @@ export const FilesDetails: FC<FilesDetailsProps> = ({ toggleFormVisibility }: Fi
               </DetailText>
             </SpacedTitle>
 
-            <Separator>
-              <Button color="blue" onClick={deleteAll}>
-                Delete {fetchedFiles.length} Files
-              </Button>
-            </Separator>
+            {fetchedFiles.length && (
+              <Separator>
+                <Button color="blue" onClick={deleteAll}>
+                  Delete {fetchedFiles.length} Files
+                </Button>
+              </Separator>
+            )}
           </>
         )}
 
