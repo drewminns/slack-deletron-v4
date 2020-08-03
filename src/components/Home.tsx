@@ -29,7 +29,7 @@ const LineBreak = styled.span`
 const HomeWrapper = styled.div`
   display: flex;
   min-height: 100vh;
-  padding: 25px;
+  padding: 25px 25px 80px;
 `
 const HomeContent = styled.div`
   margin: auto;

@@ -10,6 +10,7 @@ type ButtonProps = {
   icon?: ReactNode
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void
   isLoading?: boolean
+  hideTextOnMobile?: boolean
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -18,15 +19,27 @@ export const Button: React.FC<ButtonProps> = ({
   color = 'black',
   icon,
   isLoading = false,
+  hideTextOnMobile = false,
 }: ButtonProps) => (
   <ButtonEl color={color} onClick={onClick} isLoading={isLoading}>
-    {icon && <Icon>{icon}</Icon>}
-    {children}
+    {icon && <Icon hideTextOnMobile={hideTextOnMobile}>{icon}</Icon>}
+    <ButtonText hideTextOnMobile={hideTextOnMobile}>{children}</ButtonText>
     {isLoading && <LoadingIcon />}
   </ButtonEl>
 )
 
 Button.displayName = 'Button'
+
+const ButtonText = styled.span<{ hideTextOnMobile: boolean }>`
+  ${(props) =>
+    props.hideTextOnMobile &&
+    css`
+      display: none;
+      ${device.sm`
+        display: block;
+      `}
+    `}
+`
 
 const ButtonEl = styled.button<{ isLoading: boolean }>`
   position: relative;
@@ -68,8 +81,18 @@ const ButtonEl = styled.button<{ isLoading: boolean }>`
   }
 `
 
-const Icon = styled.div`
-  margin-right: 12px;
+const Icon = styled.div<{ hideTextOnMobile: boolean }>`
+  ${(props) =>
+    props.hideTextOnMobile
+      ? css`
+          margin-right: 0;
+          ${device.sm`
+        margin-right: 12px;
+      `}
+        `
+      : css`
+          margin-right: 12px;
+        `}
 `
 
 const LoadingIcon = styled(TailSpin)`

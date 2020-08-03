@@ -29,7 +29,6 @@
     "react-focus-lock": "^2.4.1",
     "react-hook-form": "^6.0.1",
     "react-spinners": "^0.9.0",
-    "react-twitter-embed": "^3.0.3",
     "recoil": "0.0.10",
     "styled-components": "^5.1.1",
     "styled-normalize": "^8.0.7"

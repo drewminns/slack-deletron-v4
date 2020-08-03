@@ -76,7 +76,11 @@ export const App: React.FC = () => {
       <Loading />
     )
   ) : (
-    <Home />
+    <>
+      <Home />
+      <Footer handleAboutVisibility={toggleAboutVisibility} />
+      {aboutVisible && <About handleAboutVisibility={toggleAboutVisibility} />}
+    </>
   )
 }
 

@@ -72,7 +72,13 @@ export const FileDisplayItem: FC<FileDisplayItemProps> = ({ file }: FileDisplayI
         <ItemLink href={file.url_private_download} download>
           Download File
         </ItemLink>
-        <Button isLoading={isDeleting} color={'orange'} icon={<Close />} onClick={() => deleteFile(file.id, file.size)}>
+        <Button
+          hideTextOnMobile
+          isLoading={isDeleting}
+          color={'orange'}
+          icon={<Close />}
+          onClick={() => deleteFile(file.id, file.size)}
+        >
           Delete File
         </Button>
       </ItemActions>
@@ -89,6 +95,7 @@ const ItemEl = styled.li`
   margin-bottom: 20px;
   padding-bottom: 15px;
   position: relative;
+  width: 100%;
 
   ${device.sm`
     padding: 0 40px 15px;
@@ -140,6 +147,7 @@ const ItemSize = styled.div`
   p {
     margin: 0;
     font-size: var(--fs);
+    line-height: 1.3;
 
     ${device.sm`
       font-size: var(--fs-lg);
@@ -150,6 +158,7 @@ const ItemSize = styled.div`
 const ItemDetails = styled.p`
   font-size: var(--fs-sm);
   margin: 0;
+  line-height: 1.3;
 
   ${device.sm`
       margin-top: 1em;
@@ -161,14 +170,20 @@ const ItemLink = styled.a`
   font-size: var(--fs-sm);
   color: var(--black);
   margin-right: 25px;
-`
-
-const ItemActions = styled.div`
   display: none;
-  align-items: center;
 
   ${device.sm`
     display: block;
+  `}
+`
+
+const ItemActions = styled.div`
+  align-items: center;
+  padding-left: 10px;
+
+  ${device.sm`
+    display: block;
+    padding-left: 0;
   `}
 
   ${device.md`
