@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { useRecoilValue, useSetRecoilState, useRecoilState } from 'recoil'
+import { useRecoilValue } from 'recoil'
 import styled from 'styled-components'
-import { parseISO, getUnixTime, addDays } from 'date-fns'
-
 import { Navigation } from './components/Navigation'
 import { Loading } from './components/Loading'
 import { Home } from './components/Home'
@@ -13,66 +11,24 @@ import { Button } from './components/common/Button'
 import { Footer } from './components/Footer'
 import { About } from './components/About'
 
-import { userDetailsState, FormState, fetchedFilesState, applicationErrorState, fetchedPagesState } from './state'
-import { FilesListReponse } from '../shared'
+import { userDetailsState, fetchedFilesState, fetchedPagesState, formState } from './state'
 
+import useDeleteFiles from './hooks/useDeleteFiles'
 import useLogin from './hooks/useLogin'
-
-export const generateSearchParams = (formdata: any, user: string, token: string) => {
-  let types = ''
-  const params: any = { token, count: '10', show_files_hidden_by_limit: true, user }
-  if (formdata) {
-    for (const [key, value] of Object.entries(formdata)) {
-      if (key === 'channels' && value !== 'ALL') {
-        params.channel = formdata.channels
-      } else if (value === true && key !== 'displayDate') {
-        types += `${key},`
-      } else if (key === 'startDate') {
-        params.ts_from = getUnixTime(parseISO(value as string))
-      } else if (key === 'endDate') {
-        params.ts_to = getUnixTime(addDays(parseISO(value as string), 1))
-      }
-    }
-
-    if (types.length) {
-      types = types.substring(0, types.length - 1)
-    }
-  }
-
-  return new URLSearchParams({ ...params, types })
-}
+import useFetchFiles from './hooks/useFetchFiles'
 
 export const App: React.FC = () => {
-  const [isInitialFetching, toggleInitialFetching] = useState<boolean>(true)
   const [formVisible, toggleFormVisibility] = useState<boolean>(false)
   const [aboutVisible, toggleAboutVisibility] = useState<boolean>(false)
-  const [formState, setFormState] = useState<FormState | any>({})
+
+  const { token } = useRecoilValue(userDetailsState)
+  const pages = useRecoilValue(fetchedPagesState)
+  const formData = useRecoilValue(formState)
+  const fetchedFiles = useRecoilValue(fetchedFilesState)
+
   const { loading } = useLogin()
-  const { token, profile } = useRecoilValue(userDetailsState)
-  const setFetchedPages = useSetRecoilState(fetchedPagesState)
-  const [fetchedFiles, setFetchedFiles] = useRecoilState(fetchedFilesState)
-  const setApplicationError = useSetRecoilState(applicationErrorState)
-
-  const fetchFiles = async (data?: any) => {
-    setFormState(data)
-    const params = generateSearchParams(data, profile.userId, token)
-
-    try {
-      const filesFetch = await fetch('https://slack.com/api/files.list?' + new URLSearchParams(params))
-      const files: FilesListReponse = await filesFetch.json()
-      if (files.ok) {
-        setFetchedFiles(files.files)
-        setFetchedPages(files.paging)
-        if (isInitialFetching) {
-          toggleInitialFetching(false)
-        }
-      } else {
-        setApplicationError({ active: true, value: files.error as string })
-      }
-    } catch (error) {
-      setApplicationError({ active: true, value: error })
-    }
-  }
+  const { isDeleting } = useDeleteFiles(fetchedFiles)
+  const { fetchFiles, isInitialFetching } = useFetchFiles()
 
   useEffect(() => {
     if (!loading && token) {
@@ -84,32 +40,24 @@ export const App: React.FC = () => {
     return <Loading />
   }
 
-  console.log(aboutVisible)
   return token ? (
     !isInitialFetching ? (
       <>
         <HeaderContainer>
           <Navigation />
-          <FilesDetails
-            hasFiles={fetchedFiles.length > 0}
-            formState={formState}
-            clearFilters={fetchFiles}
-            toggleFormVisibility={toggleFormVisibility}
-          />
-          {formVisible && (
-            <Form handleFormSubmit={fetchFiles} formState={formState} toggleFormVisibility={toggleFormVisibility} />
-          )}
+          <FilesDetails toggleFormVisibility={toggleFormVisibility} />
+          {formVisible && <Form handleFormSubmit={fetchFiles} toggleFormVisibility={toggleFormVisibility} />}
         </HeaderContainer>
-        <FileWrapper>
+        <FileWrapper isDeleting={isDeleting}>
           {fetchedFiles.length ? (
-            <FileList files={fetchedFiles} />
+            <FileList />
           ) : (
             <FileNone>
               <p>No files found. Either you got them all, or you should try another filter </p>
               <ButtonGroup>
                 <Button onClick={() => toggleFormVisibility(true)}>Modify Filters</Button>
                 <Button color="orange" onClick={() => fetchFiles()}>
-                  Clear Filters
+                  {formData ? 'Clear Filters' : 'Try Again'}
                 </Button>
               </ButtonGroup>
             </FileNone>
@@ -140,10 +88,11 @@ const HeaderContainer = styled.div`
   border-bottom: 1px solid var(--grey);
 `
 
-const FileWrapper = styled.div`
+const FileWrapper = styled.div<{ isDeleting: boolean }>`
   padding: 10px 25px;
   margin-top: 190px;
   padding-bottom: 40px;
+  opacity: ${(props) => (props.isDeleting ? 0.5 : 1)};
 `
 const FileNone = styled.div`
   margin-top: 60px;

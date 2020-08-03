@@ -2,8 +2,10 @@ import React, { FC } from 'react'
 import { useRecoilValue } from 'recoil'
 import styled from 'styled-components'
 
-import { fetchedFilesState, fetchedPagesState, deleteFileSizeState, FormState, userDetailsState } from '../../state'
-import { useDeleteFiles } from '../../hooks/useDeleteFiles'
+import useDeleteFiles from '../../hooks/useDeleteFiles'
+import useFetchFiles from '../../hooks/useFetchFiles'
+
+import { fetchedFilesState, deleteFileSizeState, fetchedPagesState, userDetailsState, formState } from '../../state'
 import { ReactComponent as Filter } from '../../assets/filter.svg'
 import { ReactComponent as Close } from '../../assets/close.svg'
 
@@ -12,60 +14,55 @@ import { Button } from '../common/Button'
 import { formatBytes } from '../../utils'
 
 type FilesDetailsProps = {
-  clearFilters: () => Promise<void>
   toggleFormVisibility: (val: boolean) => void
-  formState: FormState
-  hasFiles: boolean
 }
 
-export const FilesDetails: FC<FilesDetailsProps> = ({
-  toggleFormVisibility,
-  formState,
-  clearFilters,
-  hasFiles,
-}: FilesDetailsProps) => {
+export const FilesDetails: FC<FilesDetailsProps> = ({ toggleFormVisibility }: FilesDetailsProps) => {
+  const { fetchFiles } = useFetchFiles()
   const fetchedFiles = useRecoilValue(fetchedFilesState)
-  const { total } = useRecoilValue(fetchedPagesState)
   const deletedFileSize = useRecoilValue(deleteFileSizeState)
-  const { deleteAll } = useDeleteFiles(fetchedFiles)
   const { channels } = useRecoilValue(userDetailsState)
+  const { total } = useRecoilValue(fetchedPagesState)
+  const formData = useRecoilValue(formState)
+
+  const { deleteAll } = useDeleteFiles(fetchedFiles)
 
   const { amount, unit } = formatBytes(fetchedFiles.reduce((a: any, b: any) => a + b.size, 0))
   const deletedAmount = formatBytes(deletedFileSize)
 
   const handleFilters = () => {
-    if (formState) {
+    if (formData) {
       const fileGroup: string[] = []
 
-      if (formState.images) {
+      if (formData.images) {
         fileGroup.push('Images')
       }
 
-      if (formState.gdocs) {
+      if (formData.gdocs) {
         fileGroup.push('Google Docs')
       }
 
-      if (formState.pdfs) {
+      if (formData.pdfs) {
         fileGroup.push('PDFs')
       }
 
-      if (formState.snippets) {
+      if (formData.snippets) {
         fileGroup.push('Snippets')
       }
 
-      if (formState.spaces) {
+      if (formData.spaces) {
         fileGroup.push('Spaces')
       }
 
       const channelList = channels.channels.concat(channels.ims)
-      const channelName = channelList.filter((el: any) => el.id === formState.channels)[0]
+      const channelName = channelList.filter((el: any) => el.id === formData.channels)[0]
 
       return (
         <>
           <DetailText>{`All ${fileGroup.join(', ')} ${
             channelName ? `in ${channelName.name || channelName.user_name}` : ''
-          } from ${formState.startDate} to ${formState.endDate}`}</DetailText>
-          <MiniButton onClick={() => clearFilters()}>
+          } from ${formData.startDate} to ${formData.endDate}`}</DetailText>
+          <MiniButton onClick={() => fetchFiles()}>
             <Close />
           </MiniButton>
         </>
@@ -87,17 +84,18 @@ export const FilesDetails: FC<FilesDetailsProps> = ({
       </ContainerLeft>
 
       <ContainerRight>
-        {hasFiles && (
+        {fetchedFiles.length && (
           <>
             <SpacedTitle>
               <DetailText>
-                {total} Files | Total Size: {`${amount}${unit}`}
+                {fetchedFiles.length} Files {fetchedFiles.length !== total ? `of ${total}` : ''} | Total Size:{' '}
+                {`${amount}${unit}`}
               </DetailText>
             </SpacedTitle>
 
             <Separator>
               <Button color="blue" onClick={deleteAll}>
-                Delete All
+                Delete {fetchedFiles.length} Files
               </Button>
             </Separator>
           </>

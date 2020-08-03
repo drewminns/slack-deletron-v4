@@ -1,26 +1,52 @@
 import React, { FC } from 'react'
-import { useDeleteFiles } from '../../hooks/useDeleteFiles'
 import styled from 'styled-components'
+import { useSetRecoilState, useRecoilState, useRecoilValue } from 'recoil'
+
+import useDeleteFiles from '../../hooks/useDeleteFiles'
+import useFetchFiles from '../../hooks/useFetchFiles'
 
 import { FileResponse } from '../../../shared'
+import { formState, fetchedFilesState, fetchedPagesState } from '../../state'
 
 import { FileDisplayItem } from './FileDisplayItem'
 
-type FileListProps = {
-  files: FileResponse[]
-}
+export const FileList: FC = () => {
+  const { fetchFiles } = useFetchFiles()
 
-export const FileList: FC<FileListProps> = ({ files }: FileListProps) => {
-  const { deleteFile } = useDeleteFiles(files)
+  const formData = useRecoilValue(formState)
+  const fetchedFiles = useRecoilValue(fetchedFilesState)
+  const { pages, page } = useRecoilValue(fetchedPagesState)
+  const { deleteFile } = useDeleteFiles(fetchedFiles)
+
+  const handlePrevButton = () => {
+    fetchFiles(formData, page - 1)
+  }
+
+  const handleNextButton = () => {
+    fetchFiles(formData, page + 1)
+  }
 
   return (
     <FileListWrapper>
       <FileListItems>
         <FileListList>
-          {files.map((file) => (
+          {fetchedFiles.map((file: FileResponse) => (
             <FileDisplayItem key={file.id} file={file} handleDelete={deleteFile} />
           ))}
         </FileListList>
+        {pages > 1 ? (
+          <>
+            <button disabled={page <= 1} onClick={handlePrevButton}>
+              Prev Page
+            </button>
+            <p>
+              {page}/{pages}
+            </p>
+            <button disabled={page === pages} onClick={handleNextButton}>
+              Next Page
+            </button>
+          </>
+        ) : null}
       </FileListItems>
     </FileListWrapper>
   )

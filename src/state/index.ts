@@ -41,6 +41,11 @@ export const deleteFileSizeState: RecoilState<number> = atom({
   default: 0,
 })
 
+export const formState: RecoilState<FormState | any> = atom({
+  key: 'formState',
+  default: {},
+})
+
 export type FormState = {
   channels: string
   endDate: string

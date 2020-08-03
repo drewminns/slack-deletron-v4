@@ -12,12 +12,12 @@ async function wait(ms: number) {
 
 const DELETE_ENDPOINT = 'https://slack.com/api/files.delete?'
 
-export const useDeleteFiles = (fileArray: FileResponse[]) => {
+export default useDeleteFiles(fileArray: FileResponse[]) {
   const setApplicationError = useSetRecoilState(applicationErrorState)
   const userDetails = useRecoilValue(userDetailsState)
   const [deletedFileSize, setDeletedFileSize] = useRecoilState(deleteFileSizeState)
   const [fetchedFiles, setFetchedFiles] = useRecoilState(fetchedFilesState)
-  const [isLoading, setIsLoading] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
 
   const { token } = userDetails
 
@@ -39,7 +39,7 @@ export const useDeleteFiles = (fileArray: FileResponse[]) => {
   const deleteAll = async () => {
     const deletedItems: string[] = []
     let deletedFileSizeBatch = 0
-    setIsLoading(true)
+    setIsDeleting(true)
     for (const file of fileArray) {
       try {
         const deleteQueuedFile = await fetch(DELETE_ENDPOINT + new URLSearchParams({ token, file: file.id }))
@@ -51,21 +51,21 @@ export const useDeleteFiles = (fileArray: FileResponse[]) => {
           setApplicationError({ active: true, value: 'Deleting Error' })
           break
         }
-        await wait(1250)
+        await wait(500)
       } catch (err) {
         setApplicationError({ active: true, value: err })
-        setIsLoading(false)
+        setIsDeleting(false)
       }
     }
 
     setDeletedFileSize(deletedFileSize + deletedFileSizeBatch)
     setFetchedFiles(fetchedFiles.filter((file: FileResponse) => !deletedItems.includes(file.id)))
-    setIsLoading(false)
+    setIsDeleting(false)
   }
 
   return {
     deleteFile,
     deleteAll,
-    isLoading,
+    isDeleting,
   }
 }

@@ -8,7 +8,7 @@ import FocusLock from 'react-focus-lock'
 import { userDetailsState } from '../../state'
 import { ReactComponent as Close } from '../../assets/close.svg'
 
-import { FormState } from '../../state'
+import { FormState, formState } from '../../state'
 import { DatePicker } from './DatePicker'
 import { ChannelSelector } from './ChannelSelector'
 import { TypeInputList } from './TypeInputList'
@@ -25,13 +25,13 @@ export enum FILE_TYPES {
 type FormProps = {
   handleFormSubmit: (data?: any) => Promise<void>
   toggleFormVisibility: (val: boolean) => void
-  formState: FormState
 }
 
-export const Form: FC<FormProps> = ({ handleFormSubmit, toggleFormVisibility, formState }: FormProps) => {
+export const Form: FC<FormProps> = ({ handleFormSubmit, toggleFormVisibility }: FormProps) => {
   const { channels } = useRecoilValue(userDetailsState)
+  const formData = useRecoilValue(formState)
   const { register, handleSubmit, watch } = useForm({
-    defaultValues: formState,
+    defaultValues: formData,
   })
 
   const today = format(new Date(), 'yyyy-MM-dd')
@@ -83,7 +83,7 @@ export const Form: FC<FormProps> = ({ handleFormSubmit, toggleFormVisibility, fo
               <FormButton type="submit" value="Apply Filters" />
             </FormRow>
           </FormEl>
-          <FormClose onClick={handleToggle} data-autoFocus>
+          <FormClose onClick={handleToggle} data-autofocus>
             <FormCloseText>Close</FormCloseText>
             <Close />
           </FormClose>
