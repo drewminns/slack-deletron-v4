@@ -2,6 +2,7 @@ import React, { FC } from 'react'
 import styled, { createGlobalStyle } from 'styled-components'
 import FocusLock from 'react-focus-lock'
 
+import { device } from '../styles'
 import { ReactComponent as Close } from '../assets/close.svg'
 import { Title } from './common/Title'
 
@@ -55,9 +56,9 @@ const AboutWrapper = styled.div`
 const AboutClose = styled.button`
   appearance: none;
   position: absolute;
-  top: 0;
-  right: 0;
-  padding: 20px;
+  top: 15px;
+  right: 15px;
+  padding: 5px;
   background: none;
   border: 0;
   color: var(--white);
@@ -76,9 +77,12 @@ const AboutCloseText = styled.span`
 `
 
 const AboutContent = styled.div`
-  padding: 25px;
-  width: 50%;
+  padding: 30px;
   margin: auto;
+
+  ${device.sm`
+    width: 75%;
+  `}
 
   p + p:last-of-type {
     margin-bottom: var(--fs-xl);

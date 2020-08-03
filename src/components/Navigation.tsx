@@ -3,6 +3,7 @@ import { useRecoilState } from 'recoil'
 import styled from 'styled-components'
 import { size, rem } from 'polished'
 
+import { device } from '../styles'
 import { userDetailsState } from '../state'
 import { LOCALSTORAGE_TOKEN_NAME } from '../hooks/useLogin'
 
@@ -24,8 +25,8 @@ export const Navigation: FC = () => {
       <ProfileWrapper>
         <ProfileDetails>
           <ProfileName>{userDetails.profile.real_name}</ProfileName>
+          <ProfileImage src={userDetails.profile.image} alt={userDetails.profile.real_name} />
         </ProfileDetails>
-        <ProfileImage src={userDetails.profile.image} alt={userDetails.profile.real_name} />
         <Button onClick={handleLogout}>Logout</Button>
       </ProfileWrapper>
     </HeaderComponent>
@@ -39,8 +40,14 @@ const HeaderComponent = styled.header`
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 25px;
+  flex-direction: column;
+  padding: 12px 10px;
   width: 100%;
+
+  ${device.sm`
+    flex-direction: row;
+    padding: 12px 25px;
+  `}
 `
 
 const ProfileWrapper = styled.div`
@@ -53,12 +60,16 @@ const ProfileName = styled.p`
   margin: 0 ${rem(20, 10)} 0;
 `
 const ProfileImage = styled.img`
-  ${size(50)};
+  ${size(35)};
   margin-right: ${rem(28, 10)};
   border-radius: 5px;
+
+  ${device.md`
+    ${size(50)};
+  `}
 `
 
 const ProfileDetails = styled.div`
   display: flex;
-  flex-direction: column;
+  align-items: center;
 `

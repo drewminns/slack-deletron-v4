@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components'
+import { createGlobalStyle, css } from 'styled-components'
 import { normalize, rem } from 'polished'
 
 export const theme = {
@@ -17,6 +17,33 @@ export const theme = {
     grey: '#E5E5E5',
   },
 }
+
+type breakPointTypes = {
+  [key: string]: string
+}
+
+const breakpoints: breakPointTypes = {
+  xs: '480px',
+  sm: '768px',
+  md: '992px',
+  lg: '1200px',
+  xl: '1400px',
+}
+
+/**
+ * @param {{
+ * sm: string,
+ * md: string,
+ * lg: string,
+ * xl: string
+ * }} size
+ */
+
+export const device = (Object.keys(breakpoints) as Array<keyof typeof breakpoints>).reduce((acc, key) => {
+  acc[key] = (style: string) => `@media (min-width: ${breakpoints[key]}) { ${style} }`
+  return acc
+  // eslint-disable-next-line @typescript-eslint/ban-types
+}, {} as { [index: string]: Function })
 
 export const GlobalStyle = createGlobalStyle`
 

@@ -2,7 +2,6 @@ import React, { FC } from 'react'
 import styled from 'styled-components'
 import { useSetRecoilState, useRecoilState, useRecoilValue } from 'recoil'
 
-import useDeleteFiles from '../../hooks/useDeleteFiles'
 import useFetchFiles from '../../hooks/useFetchFiles'
 
 import { FileResponse } from '../../../shared'
@@ -16,7 +15,6 @@ export const FileList: FC = () => {
   const formData = useRecoilValue(formState)
   const fetchedFiles = useRecoilValue(fetchedFilesState)
   const { pages, page } = useRecoilValue(fetchedPagesState)
-  const { deleteFile } = useDeleteFiles(fetchedFiles)
 
   const handlePrevButton = () => {
     fetchFiles(formData, page - 1)
@@ -31,10 +29,10 @@ export const FileList: FC = () => {
       <FileListItems>
         <FileListList>
           {fetchedFiles.map((file: FileResponse) => (
-            <FileDisplayItem key={file.id} file={file} handleDelete={deleteFile} />
+            <FileDisplayItem key={file.id} file={file} />
           ))}
         </FileListList>
-        {pages > 1 ? (
+        {/* {pages > 1 ? (
           <>
             <button disabled={page <= 1} onClick={handlePrevButton}>
               Prev Page
@@ -46,7 +44,7 @@ export const FileList: FC = () => {
               Next Page
             </button>
           </>
-        ) : null}
+        ) : null} */}
       </FileListItems>
     </FileListWrapper>
   )

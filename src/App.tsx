@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { useRecoilValue } from 'recoil'
 import styled from 'styled-components'
+
+import { device } from './styles'
+
 import { Navigation } from './components/Navigation'
 import { Loading } from './components/Loading'
 import { Home } from './components/Home'
@@ -13,9 +16,9 @@ import { About } from './components/About'
 
 import { userDetailsState, fetchedFilesState, formState } from './state'
 
-import useDeleteFiles from './hooks/useDeleteFiles'
 import useLogin from './hooks/useLogin'
 import useFetchFiles from './hooks/useFetchFiles'
+import useDeleteFiles from './hooks/useDeleteFiles'
 
 export const App: React.FC = () => {
   const [formVisible, toggleFormVisibility] = useState<boolean>(false)
@@ -26,8 +29,8 @@ export const App: React.FC = () => {
   const fetchedFiles = useRecoilValue(fetchedFilesState)
 
   const { loading } = useLogin()
-  const { isDeleting } = useDeleteFiles(fetchedFiles)
   const { fetchFiles, isInitialFetching } = useFetchFiles()
+  const { deleteFile, deleteAll, isDeleting } = useDeleteFiles()
 
   useEffect(() => {
     if (!loading && token) {
@@ -44,7 +47,11 @@ export const App: React.FC = () => {
       <>
         <HeaderContainer>
           <Navigation />
-          <FilesDetails toggleFormVisibility={toggleFormVisibility} />
+          <FilesDetails
+            toggleFormVisibility={toggleFormVisibility}
+            handleDeleteAll={deleteAll}
+            isDeleting={isDeleting}
+          />
           {formVisible && <Form handleFormSubmit={fetchFiles} toggleFormVisibility={toggleFormVisibility} />}
         </HeaderContainer>
         <FileWrapper isDeleting={isDeleting}>
@@ -52,7 +59,7 @@ export const App: React.FC = () => {
             <FileList />
           ) : (
             <FileNone>
-              <p>No files found. Either you got them all, or you should try another filter </p>
+              <p>No files found. Either you got them all, or you should try filtering </p>
               <ButtonGroup>
                 <Button onClick={() => toggleFormVisibility(true)}>Modify Filters</Button>
                 <Button color="orange" onClick={() => fetchFiles()}>
@@ -88,16 +95,26 @@ const HeaderContainer = styled.div`
 `
 
 const FileWrapper = styled.div<{ isDeleting: boolean }>`
-  padding: 10px 25px;
-  margin-top: 190px;
-  padding-bottom: 40px;
-  opacity: ${(props) => (props.isDeleting ? 0.5 : 1)};
+  padding: 10px;
+  margin-top: 187px;
+  padding-bottom: 70px;
+  opacity: ${(props) => (props.isDeleting ? 0.3 : 1)};
+  ${device.sm`
+    margin-top: 160px;
+    padding: 10px 25px;
+    padding-bottom: 40px;
+  `};
 `
 const FileNone = styled.div`
   margin-top: 60px;
   display: flex;
   align-items: center;
   flex-direction: column;
+  text-align: center;
+
+  ${device.sm`
+    margin-top: 190px;
+  `}
 `
 
 const ButtonGroup = styled.div`

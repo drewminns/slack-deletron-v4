@@ -1,5 +1,6 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
+import { device } from '../styles'
 
 import { Logo } from './common/Logo'
 
@@ -28,20 +29,24 @@ const LineBreak = styled.span`
 const HomeWrapper = styled.div`
   display: flex;
   min-height: 100vh;
+  padding: 25px;
 `
 const HomeContent = styled.div`
   margin: auto;
   text-align: center;
 `
-
 const HomeSlogan = styled.h2`
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.25em;
-  font-size: var(--fs-xxl);
+  font-size: var(--fs-xl);
   margin: 0;
   line-height: 120%;
   margin: 30px 0 40px;
+
+  ${device.sm`
+    font-size: var(--fs-xxl);
+  `}
 `
 
 const HomeCopy = styled.p`
@@ -59,4 +64,12 @@ const HomeLink = styled.a`
   padding: 16px 40px;
   border-radius: 50px;
   letter-spacing: 0.1em;
+
+  &:focus {
+    outline-color: var(--orange);
+  }
+
+  &:hover {
+    opacity: 0.8;
+  }
 `

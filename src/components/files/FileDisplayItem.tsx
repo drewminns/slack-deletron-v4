@@ -8,17 +8,20 @@ import { formatBytes } from '../../utils'
 import { Button } from '../common/Button'
 import { Title } from '../common/Title'
 import { userDetailsState } from '../../state'
+import { device } from '../../styles'
+
+import useDeleteFiles from '../../hooks/useDeleteFiles'
 
 import { FileResponse } from '../../../shared'
 
 type FileDisplayItemProps = {
   file: FileResponse
-  handleDelete: (id: string, size: number) => void
 }
 
-export const FileDisplayItem: FC<FileDisplayItemProps> = ({ file, handleDelete }: FileDisplayItemProps) => {
+export const FileDisplayItem: FC<FileDisplayItemProps> = ({ file }: FileDisplayItemProps) => {
   const [channel, setChannel] = useState({ isChannel: false, name: '' })
   const { channels } = useRecoilValue(userDetailsState)
+  const { deleteFile, isDeleting } = useDeleteFiles()
   const filetyperegex = /(pdf|jpeg|gif|mp4|png)/gi
 
   useEffect(() => {
@@ -69,13 +72,9 @@ export const FileDisplayItem: FC<FileDisplayItemProps> = ({ file, handleDelete }
         <ItemLink href={file.url_private_download} download>
           Download File
         </ItemLink>
-        {handleDelete && (
-          <>
-            <Button color={'orange'} icon={<Close />} onClick={() => handleDelete(file.id, file.size)}>
-              Delete File
-            </Button>
-          </>
-        )}
+        <Button isLoading={isDeleting} color={'orange'} icon={<Close />} onClick={() => deleteFile(file.id, file.size)}>
+          Delete File
+        </Button>
       </ItemActions>
     </ItemEl>
   )
@@ -88,18 +87,26 @@ const ItemEl = styled.li`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
-  padding: 0 40px 15px;
+  padding-bottom: 15px;
   position: relative;
+
+  ${device.sm`
+    padding: 0 40px 15px;
+  `}
 
   &:after {
     position: absolute;
     content: '';
     display: block;
-    width: 90%;
-    left: 5%;
+    width: 100%;
     bottom: 0;
     height: 1px;
     background-color: var(--grey);
+
+    ${device.sm`
+      width: 90%;
+      left: 5%;
+    `}
   }
 
   &:last-child {
@@ -119,20 +126,35 @@ const ItemSize = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 75px;
-  margin-right: 30px;
+  width: 55px;
+  margin-right: 10px;
   border-right: 1px solid var(--black);
-  padding: 10px 30px 10px 0;
+  padding-right: 10px;
+
+  ${device.sm`
+    padding: 10px 30px 10px 0;
+    margin-right: 30px;
+    width: 100px;
+  `}
 
   p {
     margin: 0;
-    font-size: var(--fs-lg);
+    font-size: var(--fs);
+
+    ${device.sm`
+      font-size: var(--fs-lg);
+    `}
   }
 `
 
 const ItemDetails = styled.p`
   font-size: var(--fs-sm);
-  margin-bottom: 0;
+  margin: 0;
+
+  ${device.sm`
+      margin-top: 1em;
+      margin-bottom: 0;
+  `}
 `
 
 const ItemLink = styled.a`
@@ -142,6 +164,14 @@ const ItemLink = styled.a`
 `
 
 const ItemActions = styled.div`
-  display: flex;
+  display: none;
   align-items: center;
+
+  ${device.sm`
+    display: block;
+  `}
+
+  ${device.md`
+    display: flex;
+  `}
 `

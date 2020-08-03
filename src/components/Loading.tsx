@@ -1,6 +1,7 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
-import { rem } from 'polished'
+
+import { device } from '../styles'
 
 import { Logo } from './common/Logo'
 
@@ -28,7 +29,11 @@ const LoadingEl = styled.div`
 const LoadingText = styled.p`
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.25em;
+  letter-spacing: 0.1em;
   font-size: var(--fs-xl);
   margin: 0;
+
+  ${device.sm`
+  letter-spacing: 0.25em;
+  `}
 `

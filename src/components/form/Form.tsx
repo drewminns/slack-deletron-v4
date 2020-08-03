@@ -5,10 +5,11 @@ import { format, subDays, parseISO } from 'date-fns'
 import styled from 'styled-components'
 import FocusLock from 'react-focus-lock'
 
+import { device } from '../../styles'
 import { userDetailsState } from '../../state'
 import { ReactComponent as Close } from '../../assets/close.svg'
 
-import { FormState, formState } from '../../state'
+import { formState } from '../../state'
 import { DatePicker } from './DatePicker'
 import { ChannelSelector } from './ChannelSelector'
 import { TypeInputList } from './TypeInputList'
@@ -110,9 +111,13 @@ const FormContainer = styled.div`
   max-width: 450px;
   color: var(--white);
   height: 100%;
-  padding: 70px 45px;
+  padding: 50px 30px;
   position: relative;
   overflow-y: auto;
+
+  ${device.sm`
+    padding: 70px 45px;
+  `}
 `
 
 const FormEl = styled.form`
@@ -137,6 +142,10 @@ const FormButton = styled.input`
   align-items: center;
   background-color: var(--white);
 
+  &:focus {
+    outline-color: var(--orange);
+  }
+
   &:hover {
     opacity: 0.8;
   }
@@ -145,15 +154,16 @@ const FormButton = styled.input`
 const FormClose = styled.button`
   appearance: none;
   position: absolute;
-  top: 0;
-  right: 0;
-  padding: 20px;
+  top: 15px;
+  right: 15px;
+  padding: 5px;
   background: none;
   border: 0;
   color: var(--white);
 
   &:focus,
   &:active {
+    outline-color: var(--orange);
     border: none;
   }
 `

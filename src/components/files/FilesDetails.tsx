@@ -2,12 +2,13 @@ import React, { FC, useEffect } from 'react'
 import { useRecoilValue } from 'recoil'
 import styled from 'styled-components'
 
-import useDeleteFiles from '../../hooks/useDeleteFiles'
+import { device } from '../../styles'
 import useFetchFiles from '../../hooks/useFetchFiles'
 
 import { fetchedFilesState, deleteFileSizeState, fetchedPagesState, userDetailsState, formState } from '../../state'
 import { ReactComponent as Filter } from '../../assets/filter.svg'
 import { ReactComponent as Close } from '../../assets/close.svg'
+import { ReactComponent as TailSpin } from '../../assets/tailSpin.svg'
 
 import { Button } from '../common/Button'
 
@@ -15,17 +16,21 @@ import { formatBytes } from '../../utils'
 
 type FilesDetailsProps = {
   toggleFormVisibility: (val: boolean) => void
+  isDeleting: boolean
+  handleDeleteAll: () => Promise<void>
 }
 
-export const FilesDetails: FC<FilesDetailsProps> = ({ toggleFormVisibility }: FilesDetailsProps) => {
+export const FilesDetails: FC<FilesDetailsProps> = ({
+  toggleFormVisibility,
+  handleDeleteAll,
+  isDeleting,
+}: FilesDetailsProps) => {
   const { fetchFiles } = useFetchFiles()
   const fetchedFiles = useRecoilValue(fetchedFilesState)
   const deletedFileSize = useRecoilValue(deleteFileSizeState)
   const { channels } = useRecoilValue(userDetailsState)
   const { total } = useRecoilValue(fetchedPagesState)
   const formData = useRecoilValue(formState)
-
-  const { deleteAll, isDeleting } = useDeleteFiles(fetchedFiles)
 
   const { amount, unit } = formatBytes(fetchedFiles.reduce((a: any, b: any) => a + b.size, 0))
   const deletedAmount = formatBytes(deletedFileSize)
@@ -77,14 +82,14 @@ export const FilesDetails: FC<FilesDetailsProps> = ({ toggleFormVisibility }: Fi
       <ContainerLeft>
         <Separator>
           <Button onClick={() => toggleFormVisibility(true)} icon={<Filter />}>
-            Filters
+            Filters {formData && <Count>{Object.values(formData).filter((form) => form).length}</Count>}
           </Button>
         </Separator>
         {handleFilters()}
       </ContainerLeft>
 
       <ContainerRight>
-        {fetchedFiles.length && (
+        {fetchedFiles.length > 0 && (
           <>
             <SpacedTitle>
               <DetailText>
@@ -95,7 +100,7 @@ export const FilesDetails: FC<FilesDetailsProps> = ({ toggleFormVisibility }: Fi
 
             {fetchedFiles.length && (
               <Separator>
-                <Button color="blue" onClick={deleteAll}>
+                <Button color="blue" onClick={handleDeleteAll} isLoading={isDeleting}>
                   Delete {fetchedFiles.length} Files
                 </Button>
               </Separator>
@@ -115,7 +120,13 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px 25px 20px;
+  padding: 10px;
+  border-top: 1px solid var(--grey);
+
+  ${device.sm`
+    border-top: none;
+    padding: 20px 25px 20px;
+  `}
 `
 
 const ContainerLeft = styled.div`
@@ -131,18 +142,33 @@ const ContainerRight = styled.div`
 `
 
 const Separator = styled.div`
+  ${device.sm`
   border-right: 1px solid var(--black);
-  padding-right: 25px;
-  margin-right: 25px;
+    padding-right: 25px;
+    margin-right: 25px;
+  `}
 `
 
 const SpacedTitle = styled.div`
   margin-right: 36px;
+  display: none;
+
+  ${device.lg`
+    display: block;
+  `}
 `
 
 const DetailText = styled.p`
   font-size: var(--fs-sm);
   letter-spacing: 0.05em;
+  line-height: 1.2;
+  margin-left: 5px;
+  display: none;
+
+  ${device.sm`
+    margin-left: 0;
+    display: block;
+  `}
 `
 
 const MiniButton = styled.button`
@@ -162,4 +188,21 @@ const Total = styled.p`
   margin: 0;
   letter-spacing: 0.11em;
   font-size: var(--fs-sm);
+  display: none;
+
+  ${device.sm`
+    display: block;
+  `}
+`
+
+const Count = styled.span`
+  background-color: var(--white);
+  border-radius: 5px;
+  padding: 1px 4px;
+  color: var(--black);
+  margin-left: 5px;
+
+  ${device.sm`
+    display: none;
+  `}
 `
