@@ -7,7 +7,7 @@ import { FilesListReponse } from '../../shared'
 
 export const generateSearchParams = (formdata: any, user: string, token: string, page = 1, isAdmin = false) => {
   let types = ''
-  const params: any = { token, count: '10', show_files_hidden_by_limit: true }
+  const params: any = { token, count: '50', show_files_hidden_by_limit: true }
   if (!isAdmin) {
     params.user = user
   }
