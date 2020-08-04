@@ -2,10 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 import { useRecoilState } from 'recoil'
 
-import { applicationErrorState } from '../state'
+import { applicationNoticeState } from '../state'
 
 export const Notification: React.FC = () => {
-  const [applicationError] = useRecoilState(applicationErrorState)
+  const [applicationError] = useRecoilState(applicationNoticeState)
   return (
     <NotificationContainer>
       <NotificationsText>{applicationError.value}</NotificationsText>

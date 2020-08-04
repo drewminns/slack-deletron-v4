@@ -4,7 +4,11 @@ import { device } from '../styles'
 
 import { Logo } from './common/Logo'
 
-export const Home: FC = () => (
+type HomeProps = {
+  errorString: string
+}
+
+export const Home: FC<HomeProps> = ({ errorString }: HomeProps) => (
   <HomeWrapper>
     <HomeContent>
       <Logo />
@@ -16,6 +20,7 @@ export const Home: FC = () => (
         <LineBreak>Security and privacy are the goal.</LineBreak>
       </HomeCopy>
       <HomeLink href="/api/auth/login">Login with Slack</HomeLink>
+      {errorString && <p>{errorString}</p>}
     </HomeContent>
   </HomeWrapper>
 )

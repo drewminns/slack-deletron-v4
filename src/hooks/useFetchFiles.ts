@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useSetRecoilState, useRecoilValue } from 'recoil'
 import { parseISO, getUnixTime, addDays } from 'date-fns'
 
-import { userDetailsState, fetchedFilesState, applicationErrorState, fetchedPagesState, formState } from '../state'
+import { userDetailsState, fetchedFilesState, applicationNoticeState, fetchedPagesState, formState } from '../state'
 import { FilesListReponse } from '../../shared'
 
 export const generateSearchParams = (formdata: any, user: string, token: string, page = 1, isAdmin = false) => {
@@ -39,7 +39,7 @@ export default function useFetchFiles() {
   const setFormState = useSetRecoilState(formState)
   const setFetchedFiles = useSetRecoilState(fetchedFilesState)
   const setFetchedPages = useSetRecoilState(fetchedPagesState)
-  const setApplicationError = useSetRecoilState(applicationErrorState)
+  const setApplicationError = useSetRecoilState(applicationNoticeState)
 
   const fetchFiles = async (data?: any, page = 1) => {
     setFormState(data)

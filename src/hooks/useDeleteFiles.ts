@@ -3,15 +3,15 @@ import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil'
 
 import { FileResponse } from '../../shared'
 import {
-  applicationErrorState,
+  applicationNoticeState,
   deleteFileSizeState,
   fetchedFilesState,
   userDetailsState,
-  fetchedPagesState,
-  formState,
+  // fetchedPagesState,
+  // formState,
 } from '../state'
 
-import useFetchFiles from './useFetchFiles'
+// import useFetchFiles from './useFetchFiles'
 
 async function wait(ms: number) {
   return new Promise((resolve: any) => {
@@ -22,15 +22,15 @@ async function wait(ms: number) {
 const DELETE_ENDPOINT = 'https://slack.com/api/files.delete?'
 
 export default function useDeleteFiles() {
-  const setApplicationError = useSetRecoilState(applicationErrorState)
+  const setApplicationNoticeState = useSetRecoilState(applicationNoticeState)
   const userDetails = useRecoilValue(userDetailsState)
   const [deletedFileSize, setDeletedFileSize] = useRecoilState(deleteFileSizeState)
   const [fetchedFiles, setFetchedFiles] = useRecoilState(fetchedFilesState)
-  const { page, pages } = useRecoilValue(fetchedPagesState)
-  const formData = useRecoilValue(formState)
+  // const { page, pages } = useRecoilValue(fetchedPagesState)
+  // const formData = useRecoilValue(formState)
   const [isDeleting, setIsDeleting] = useState(false)
 
-  const { fetchFiles } = useFetchFiles()
+  // const { fetchFiles } = useFetchFiles()
   const { token } = userDetails
 
   const deleteFile = async (id: string, size: number) => {
@@ -40,11 +40,20 @@ export default function useDeleteFiles() {
       if (deletedFile.ok) {
         setFetchedFiles(fetchedFiles.filter((file: any) => file.id !== id))
         setDeletedFileSize(deletedFileSize + size)
+        setApplicationNoticeState({
+          active: true,
+          value: `File Deleted Successfully`,
+          type: 'success',
+        })
       } else {
-        setApplicationError({ active: true, value: deletedFile.error })
+        setApplicationNoticeState({ active: true, value: 'Error Deleting File - File Not Found', type: 'error' })
       }
     } catch (error) {
-      setApplicationError({ active: true, value: error })
+      if (error === 'file_not_found') {
+        setApplicationNoticeState({ active: true, value: 'Error Deleting File - File Not Found', type: 'error' })
+      } else {
+        setApplicationNoticeState({ active: true, value: 'Error Deleting File - Try Again', type: 'error' })
+      }
     }
   }
 
@@ -60,12 +69,12 @@ export default function useDeleteFiles() {
           deletedItems.push(file.id)
           deletedFileSizeBatch += file.size
         } else {
-          setApplicationError({ active: true, value: 'Deleting Error' })
+          setApplicationNoticeState({ active: true, value: 'Error Deleting Files - Try Again', type: 'error' })
           break
         }
         await wait(500)
       } catch (err) {
-        setApplicationError({ active: true, value: err })
+        setApplicationNoticeState({ active: true, value: 'Error Deleting Files - Try Again', type: 'error' })
         setIsDeleting(false)
       }
     }
@@ -73,6 +82,11 @@ export default function useDeleteFiles() {
     setDeletedFileSize(deletedFileSize + deletedFileSizeBatch)
     setFetchedFiles(fetchedFiles.filter((file: FileResponse) => !deletedItems.includes(file.id)))
     setIsDeleting(false)
+    setApplicationNoticeState({
+      active: true,
+      value: `${deletedFileSizeBatch} Files Deleted Successfully`,
+      type: 'success',
+    })
     // if (page < pages) {
     //   fetchFiles(formData, page + 1)
     // }

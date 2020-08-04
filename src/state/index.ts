@@ -31,9 +31,9 @@ export const fetchedFilesErrorState: RecoilState<string> = atom({
   default: '',
 })
 
-export const applicationErrorState: RecoilState<any> = atom({
-  key: 'applicationErrorState',
-  default: { value: '', active: false },
+export const applicationNoticeState: RecoilState<any> = atom({
+  key: 'applicationNoticeState',
+  default: { value: '', active: false, type: 'none' },
 })
 
 export const deleteFileSizeState: RecoilState<number> = atom({

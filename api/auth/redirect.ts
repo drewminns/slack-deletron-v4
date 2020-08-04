@@ -22,24 +22,35 @@ export default async (req: NowRequest, res: NowResponse) => {
   const slack_code = req.query.code as string
   const uri: string = generateSlackOAuthURI(slack_code)
 
-  try {
-    const slackOAuthFetch = await fetch(uri)
-    const slackOAuthFetchResponse = await slackOAuthFetch.json()
-    if (!slackOAuthFetchResponse.ok) {
-      res.status(401).json({ ok: false, error: slackOAuthFetchResponse.error })
-      return
-    }
-    const token = issueJWT(slackOAuthFetchResponse.authed_user.access_token, slackOAuthFetchResponse.authed_user.id)
+  if (req.query.error) {
     const redirectPath = url.format({
       pathname: REDIRECT_ROOT,
       query: {
-        token,
+        error: req.query.error,
       },
     })
     res.writeHead(302, { Location: redirectPath })
     res.end()
-  } catch (err) {
-    res.status(500).json({ ok: false, error: err })
-    return
+  } else {
+    try {
+      const slackOAuthFetch = await fetch(uri)
+      const slackOAuthFetchResponse = await slackOAuthFetch.json()
+      if (!slackOAuthFetchResponse.ok) {
+        res.status(401).json({ ok: false, error: slackOAuthFetchResponse.error })
+        return
+      }
+      const token = issueJWT(slackOAuthFetchResponse.authed_user.access_token, slackOAuthFetchResponse.authed_user.id)
+      const redirectPath = url.format({
+        pathname: REDIRECT_ROOT,
+        query: {
+          token,
+        },
+      })
+      res.writeHead(302, { Location: redirectPath })
+      res.end()
+    } catch (err) {
+      res.status(500).json({ ok: false, error: err })
+      return
+    }
   }
 }

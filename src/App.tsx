@@ -16,8 +16,9 @@ import { Form } from './components/form/Form'
 import { Button } from './components/common/Button'
 import { Footer } from './components/Footer'
 import { About } from './components/About'
+import { Banner } from './components/common/Banner'
 
-import { userDetailsState, fetchedFilesState, formState } from './state'
+import { userDetailsState, fetchedFilesState, formState, applicationNoticeState } from './state'
 
 import useLogin from './hooks/useLogin'
 import useFetchFiles from './hooks/useFetchFiles'
@@ -30,6 +31,7 @@ export const App: React.FC = () => {
   const { token } = useRecoilValue(userDetailsState)
   const formData = useRecoilValue(formState)
   const fetchedFiles = useRecoilValue(fetchedFilesState)
+  const applicationNotice = useRecoilValue(applicationNoticeState)
 
   const { loading } = useLogin()
   const { fetchFiles, isInitialFetching } = useFetchFiles()
@@ -48,6 +50,7 @@ export const App: React.FC = () => {
   return token ? (
     !isInitialFetching ? (
       <>
+        {applicationNotice.active && <Banner value={applicationNotice.value} type={applicationNotice.type} />}
         <HeaderContainer>
           <Navigation />
           <FilesDetails
@@ -80,7 +83,7 @@ export const App: React.FC = () => {
     )
   ) : (
     <>
-      <Home />
+      <Home errorString={applicationNotice.value} />
       <Footer handleAboutVisibility={toggleAboutVisibility} />
       {aboutVisible && <About handleAboutVisibility={toggleAboutVisibility} />}
     </>
