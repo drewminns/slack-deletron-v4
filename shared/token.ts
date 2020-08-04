@@ -1,7 +1,7 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 import jwt from 'jsonwebtoken'
 
-import { JWT } from '../shared'
+import { JWT } from '.'
 
 const { TOKEN_KEY } = process.env || ''
 

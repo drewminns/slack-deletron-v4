@@ -1,14 +1,14 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 import url from 'url'
-import fetch from 'node-fetch'
+import fetch from 'cross-fetch'
 
-import { issueJWT } from '../../utils'
+import { issueJWT } from '../../shared'
 
-const { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, SLACK_OAUTH_URI, CLIENT_URL } = process.env || ''
+const { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI } = process.env || ''
 
 const generateSlackOAuthURI = (code: string): string => {
   return url.format({
-    pathname: SLACK_OAUTH_URI,
+    pathname: 'https://slack.com/api/oauth.v2.access',
     query: {
       client_id: CLIENT_ID,
       client_secret: CLIENT_SECRET,
@@ -25,20 +25,19 @@ export default async (req: NowRequest, res: NowResponse) => {
   try {
     const slackOAuthFetch = await fetch(uri)
     const slackOAuthFetchResponse = await slackOAuthFetch.json()
-
     if (!slackOAuthFetchResponse.ok) {
       res.status(401).json({ ok: false, error: slackOAuthFetchResponse.error })
       return
     }
-
-    const token = issueJWT(slackOAuthFetchResponse.access_token, slackOAuthFetchResponse.user_id)
+    const token = issueJWT(slackOAuthFetchResponse.authed_user.access_token, slackOAuthFetchResponse.authed_user.id)
     const redirectPath = url.format({
-      pathname: CLIENT_URL,
+      pathname: 'http://localhost:3000',
       query: {
         token,
       },
     })
-    res.json({ ok: true, path: redirectPath, token })
+    res.writeHead(302, { Location: redirectPath })
+    res.end()
   } catch (err) {
     res.status(500).json({ ok: false, error: err })
     return

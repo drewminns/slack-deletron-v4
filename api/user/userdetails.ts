@@ -1,11 +1,18 @@
 import { NowRequest, NowResponse } from '@vercel/node'
-import fetch from 'node-fetch'
+import fetch from 'cross-fetch'
 
-import { verifyToken } from '../../utils'
-import { User, ConversationsList, ChannelResponse, FilteredChannels, UserProfile } from '../../shared'
+import {
+  User,
+  ConversationsList,
+  ChannelResponse,
+  FilteredChannels,
+  UserProfile,
+  verifyToken,
+  IMResponse,
+} from '../../shared'
 
 function filterChannels(channels: ChannelResponse[]): FilteredChannels[] {
-  return channels.map(({ id, name, is_channel, is_group, is_archived, is_private, created, creator }) => ({
+  return channels.map(({ id, name, is_channel, user, is_group, is_archived, is_private, created, creator, is_im }) => ({
     id,
     name,
     is_channel,
@@ -14,6 +21,8 @@ function filterChannels(channels: ChannelResponse[]): FilteredChannels[] {
     is_private,
     created,
     creator,
+    is_im,
+    user,
   }))
 }
 
@@ -23,7 +32,7 @@ function cleanProfile(profile: User['user']): UserProfile {
     name: profile.name,
     real_name: profile.profile.real_name_normalized,
     display_name: profile.profile.display_name_normalized,
-    image: profile.profile.image_1024,
+    image: profile.profile.image_72,
     is_admin: profile.is_admin,
     is_owner: profile.is_owner,
   }
@@ -32,7 +41,6 @@ function cleanProfile(profile: User['user']): UserProfile {
 export default verifyToken(async (req: NowRequest, res: NowResponse, userToken: { user: string; token: string }) => {
   try {
     const { token, user } = userToken
-
     const profileRequest = await fetch('https://slack.com/api/users.info?' + new URLSearchParams({ token, user }))
     const channelsRequest = await fetch(
       'https://slack.com/api/conversations.list?' +
@@ -48,10 +56,41 @@ export default verifyToken(async (req: NowRequest, res: NowResponse, userToken: 
         return
       }
 
+      const channelsList: ChannelResponse[] = []
+      const IMList: IMResponse[] = []
       const channels = filterChannels(channelsData.channels as ChannelResponse[])
-      const profile = cleanProfile(profileData.user)
+      channels.forEach((channel: any) => {
+        if (channel.is_channel) {
+          channelsList.push(channel)
+        } else {
+          IMList.push(channel)
+        }
+      })
 
-      res.status(200).json({ ok: true, data: { channels, profile } })
+      const fetchedIMNames = await IMList.map(async (channel) => {
+        const userRequest = await fetch(
+          'https://slack.com/api/users.info?' + new URLSearchParams({ token, user: channel.user }),
+        )
+        const userInfo: User = await userRequest.json()
+        if (userInfo.ok) {
+          return {
+            ...channel,
+            user_name: userInfo.user.real_name,
+          }
+        }
+      })
+
+      const profile = cleanProfile(profileData.user)
+      Promise.all(fetchedIMNames)
+        .then((fetchImResultNames) => {
+          const cleanIMResults = fetchImResultNames.filter((imresult) => imresult)
+          res
+            .status(200)
+            .json({ ok: true, data: { token, channels: { channels: channelsList, ims: cleanIMResults }, profile } })
+        })
+        .catch((error) => {
+          res.status(401).json({ ok: false, error })
+        })
     })
   } catch (error) {
     res.status(401).json({ ok: false, error })

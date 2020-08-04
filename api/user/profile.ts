@@ -1,8 +1,7 @@
 import { NowRequest, NowResponse } from '@vercel/node'
-import fetch from 'node-fetch'
+import fetch from 'cross-fetch'
 
-import { verifyToken } from '../../utils'
-import { User, UserResponse } from '../../shared'
+import { User, UserResponse, verifyToken } from '../../shared'
 
 export default verifyToken(async (req: NowRequest, res: NowResponse, userToken: { user: string; token: string }) => {
   try {
