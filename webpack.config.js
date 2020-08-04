@@ -49,6 +49,23 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './src/index.html',
     }),
-    new FaviconsWebpackPlugin('./src/assets/favicon.svg'),
+    new FaviconsWebpackPlugin({
+      logo: './src/assets/favicon.svg',
+      lang: 'en-US',
+      favicons: {
+        appName: 'Slack Deletron',
+        appDescription: 'Manage and Delete Slack files from your team.',
+        developerName: 'Drew Minns',
+        developerURL: 'https://drewminns.com', // prevent retrieving from the nearest package.json
+        background: '#fff',
+        theme_color: '#000',
+        icons: {
+          coast: false,
+          yandex: false,
+          windows: false,
+          appleStartup: false,
+        },
+      },
+    }),
   ],
 }

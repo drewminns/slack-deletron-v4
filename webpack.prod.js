@@ -6,6 +6,7 @@ const TerserPlugin = require('terser-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
+const CopyPlugin = require('copy-webpack-plugin')
 
 module.exports = {
   entry: ['./src/index.tsx'],
@@ -48,7 +49,25 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './src/index.html',
     }),
-    new FaviconsWebpackPlugin('./src/assets/favicon.svg'),
+    new FaviconsWebpackPlugin({
+      logo: './src/assets/favicon.svg',
+      lang: 'en-US',
+      favicons: {
+        appName: 'Slack Deletron',
+        appDescription: 'Manage and Delete Slack files from your team.',
+        developerName: 'Drew Minns',
+        developerURL: 'https://drewminns.com', // prevent retrieving from the nearest package.json
+        background: '#fff',
+        theme_color: '#000',
+        icons: {
+          coast: false,
+          yandex: false,
+          windows: false,
+          appleStartup: false,
+        },
+      },
+    }),
+    new CopyPlugin({ patterns: [{ from: './meta', to: './meta' }] }),
     new MiniCssExtractPlugin(),
     new webpack.optimize.ModuleConcatenationPlugin(),
   ],
