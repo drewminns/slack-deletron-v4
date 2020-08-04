@@ -5,9 +5,14 @@ import { parseISO, getUnixTime, addDays } from 'date-fns'
 import { userDetailsState, fetchedFilesState, applicationErrorState, fetchedPagesState, formState } from '../state'
 import { FilesListReponse } from '../../shared'
 
-export const generateSearchParams = (formdata: any, user: string, token: string, page = 1) => {
+export const generateSearchParams = (formdata: any, user: string, token: string, page = 1, isAdmin = false) => {
+  console.log(isAdmin)
   let types = ''
-  const params: any = { token, count: '10', show_files_hidden_by_limit: true, user }
+  const params: any = { token, count: '10', show_files_hidden_by_limit: true }
+  if (!isAdmin) {
+    params.user = user
+  }
+
   if (formdata) {
     for (const [key, value] of Object.entries(formdata)) {
       if (key === 'channels' && value !== 'ALL') {
@@ -39,7 +44,7 @@ export default function useFetchFiles() {
 
   const fetchFiles = async (data?: any, page = 1) => {
     setFormState(data)
-    const params = generateSearchParams(data, profile.userId, token, page)
+    const params = generateSearchParams(data, profile.userId, token, page, profile.is_admin)
 
     try {
       const filesFetch = await fetch('https://slack.com/api/files.list?' + new URLSearchParams(params))

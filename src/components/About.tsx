@@ -23,7 +23,14 @@ export const About: FC<AboutProps> = ({ handleAboutVisibility }: AboutProps) => 
         <p>
           Slack Deletron is an app that allows users to search and delete files from their Slack team account. Using the
           available Slack API tools, the Deletron stores nothing but an identifier to log in. All files are pulled
-          directly from Slack itself. You can only delete files you have shared, and cannot view or access others.
+          directly from Slack itself.
+        </p>
+        <AboutTitle>What files can I delete?</AboutTitle>
+        <p>
+          If you're an admin of the Slack group you've logged in with, you have the ability to search and delete any
+          files that you have shared in public and private messages, or others have shared in public groups. If you are
+          not an admin, you'll be able to search and delete files that you have shared in public or private messages. We
+          make requests directly to Slack with your unique user id, so you are protected.
         </p>
         <AboutTitle>Why make this thing?</AboutTitle>
         <p>

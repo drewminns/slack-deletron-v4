@@ -55,7 +55,7 @@ export const FileDisplayItem: FC<FileDisplayItemProps> = ({ file }: FileDisplayI
           <p>{amount}</p>
           <p>{unit}</p>
         </ItemSize>
-        <div>
+        <div style={{ flex: 1 }}>
           <Title type="p">{file.name}</Title>
           <ItemDetails>
             {channel.isChannel ? 'Posted' : 'Shared'} {format(fromUnixTime(file.created), 'MMMM dd, yyyy - HH:mm')}{' '}
@@ -126,7 +126,11 @@ const ItemEl = styled.li`
 const ItemContent = styled.div`
   display: flex;
   align-items: center;
-  flex: 1;
+  width: 85%;
+
+  ${device.sm`
+    width: auto;
+  `}
 `
 
 const ItemSize = styled.div`
@@ -183,7 +187,7 @@ const ItemLink = styled.a`
 
 const ItemActions = styled.div`
   align-items: center;
-  padding-left: 10px;
+  padding-left: 5px;
 
   ${device.sm`
     display: flex;

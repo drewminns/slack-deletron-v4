@@ -67,11 +67,9 @@ FileList.displayName = 'File List Section'
 const FileListList = styled.ul<{ isDeleting: boolean }>`
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
   padding: 0;
   margin: 0;
   list-style: none;
-  position: relative;
   ${(props) =>
     props.isDeleting &&
     css`
