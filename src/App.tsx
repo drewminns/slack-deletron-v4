@@ -89,8 +89,6 @@ export const App: React.FC = () => {
 
 App.displayName = 'App'
 
-const AppContainer = styled.div``
-
 const HeaderContainer = styled.div`
   position: fixed;
   top: 0;
@@ -106,6 +104,8 @@ const FileWrapper = styled.div<{ isDeleting: boolean }>`
   margin-top: 187px;
   padding-bottom: 70px;
   opacity: ${(props) => (props.isDeleting ? 0.3 : 1)};
+  pointer-events: ${(props) => (props.isDeleting ? 'none' : 'auto')};
+
   ${device.sm`
     margin-top: 160px;
     padding: 10px 25px;

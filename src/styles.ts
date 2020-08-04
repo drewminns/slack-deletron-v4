@@ -3,12 +3,12 @@ import { normalize, rem } from 'polished'
 
 export const theme = {
   fontFamily: '"Inter", sans-serif',
-  fontSize: '14px',
+  fontSize: '15px',
   fontSizeLG: '16px',
   fontSizeXXL: '56px',
   fontSizeXL: '42px',
-  fontSizeSM: '12px',
-  fontSizeXS: '11px',
+  fontSizeSM: '14px',
+  fontSizeXS: '12px',
   colors: {
     black: '#000000',
     orange: '#FF5F31',
@@ -63,6 +63,7 @@ export const GlobalStyle = createGlobalStyle`
   html {
     font-size: 10px;
     font-size: 62.5%;
+    min-height: -webkit-fill-available;
   }
 
   body {
@@ -70,5 +71,7 @@ export const GlobalStyle = createGlobalStyle`
     font-size: var(--fs, ${theme.fontSize});
     color: var(--color-black, ${theme.colors.black});
     line-height: 1.7;
+    min-height: -webkit-fill-available;
+    min-height: 100vh;
   }
 `

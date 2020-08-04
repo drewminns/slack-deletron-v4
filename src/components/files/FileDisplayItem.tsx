@@ -157,11 +157,12 @@ const ItemSize = styled.div`
 `
 
 const ItemDetails = styled.p`
-  font-size: var(--fs-sm);
+  font-size: var(--fs-xs);
   margin: 0;
   line-height: 1.3;
 
   ${device.sm`
+      font-size: var(--fs-sm);
       margin-top: 1em;
       margin-bottom: 0;
   `}

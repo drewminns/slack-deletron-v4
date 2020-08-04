@@ -28,8 +28,12 @@ const LineBreak = styled.span`
 
 const HomeWrapper = styled.div`
   display: flex;
-  min-height: 100vh;
+  min-height: calc(100vh - 85px);
   padding: 25px 25px 80px;
+
+  ${device.sm`
+    min-height: calc(100vh - 50px);
+  `}
 `
 const HomeContent = styled.div`
   margin: auto;
