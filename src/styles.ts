@@ -30,15 +30,6 @@ const breakpoints: breakPointTypes = {
   xl: '1400px',
 }
 
-/**
- * @param {{
- * sm: string,
- * md: string,
- * lg: string,
- * xl: string
- * }} size
- */
-
 export const device = (Object.keys(breakpoints) as Array<keyof typeof breakpoints>).reduce((acc, key) => {
   acc[key] = (style: string) => `@media (min-width: ${breakpoints[key]}) { ${style} }`
   return acc
