@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react'
 import styled, { css } from 'styled-components'
 import { device } from '../../styles'
 
-import { ReactComponent as TailSpin } from '../../assets/tailSpin.svg'
+import { ReactComponent as TailSpin } from '../../assets/tailspin.svg'
 
 type ButtonProps = {
   children: ReactNode
