@@ -4,6 +4,9 @@ import styled from 'styled-components'
 
 import { device } from './styles'
 
+import { ReactComponent as Restart } from './assets/restart.svg'
+import { ReactComponent as Close } from './assets/close.svg'
+
 import { Navigation } from './components/Navigation'
 import { Loading } from './components/Loading'
 import { Home } from './components/Home'
@@ -30,7 +33,7 @@ export const App: React.FC = () => {
 
   const { loading } = useLogin()
   const { fetchFiles, isInitialFetching } = useFetchFiles()
-  const { deleteFile, deleteAll, isDeleting } = useDeleteFiles()
+  const { deleteAll, isDeleting } = useDeleteFiles()
 
   useEffect(() => {
     if (!loading && token) {
@@ -62,8 +65,8 @@ export const App: React.FC = () => {
               <p>No files found. Either you got them all, or you should try filtering </p>
               <ButtonGroup>
                 <Button onClick={() => toggleFormVisibility(true)}>Modify Filters</Button>
-                <Button color="orange" onClick={() => fetchFiles()}>
-                  {formData ? 'Clear Filters' : 'Try Again'}
+                <Button color="orange" onClick={() => fetchFiles()} icon={formData ? <Close /> : <Restart />}>
+                  {formData ? 'Clear Filters' : 'Search Again'}
                 </Button>
               </ButtonGroup>
             </FileNone>
@@ -117,7 +120,11 @@ const FileNone = styled.div`
   text-align: center;
 
   ${device.sm`
-    margin-top: 190px;
+    margin-top: 10px;
+  `}
+
+  ${device.md`
+    margin-top: 160px;
   `}
 `
 

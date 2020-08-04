@@ -25,7 +25,27 @@ export const About: FC<AboutProps> = ({ handleAboutVisibility }: AboutProps) => 
           available Slack API tools, the Deletron stores nothing but an identifier to log in. All files are pulled
           directly from Slack itself.
         </p>
-        <Title type="h3">What is Slack Deletron?</Title>
+        <Title type="h3">Why make this thing?</Title>
+        <p>
+          Free Slack accounts have a limit of files that the space can host. After a while, old messages are deleted in
+          place of file storage. Deleting files through Slack is a highly manual process, so using the Slack API, this
+          app helps users bulk delete files.
+        </p>
+        <Title type="h3">Who made this?</Title>
+        <p>
+          <a href="https://drewminns.com" rel="noopener">
+            Drew Minns
+          </a>{' '}
+          is a developer from Toronto, Canada. You can find his work on{' '}
+          <a href="https://github.com/drewminns" rel="noreferrer noopener">
+            Github
+          </a>{' '}
+          and you can find him on{' '}
+          <a href="https://twitter.com/drewisthe" rel="noreferrer noopener">
+            Twitter
+          </a>
+          .
+        </p>
       </AboutContent>
     </AboutWrapper>
   </FocusLock>
@@ -83,6 +103,10 @@ const AboutContent = styled.div`
   ${device.sm`
     width: 75%;
   `}
+
+  a {
+    color: var(--white);
+  }
 
   p + p:last-of-type {
     margin-bottom: var(--fs-xl);

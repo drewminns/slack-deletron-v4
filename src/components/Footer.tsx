@@ -25,7 +25,7 @@ export const Footer: FC<AboutProps> = ({ handleAboutVisibility }: AboutProps) =>
     <FooterSection>
       <FooterCopy>
         &#169; {getYear(new Date())}{' '}
-        <a href="https://drewminns.com" rel="noreferrer noopener">
+        <a href="https://drewminns.com" rel="noopener">
           Drew Minns
         </a>
       </FooterCopy>

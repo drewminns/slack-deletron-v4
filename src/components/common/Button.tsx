@@ -11,6 +11,7 @@ type ButtonProps = {
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void
   isLoading?: boolean
   hideTextOnMobile?: boolean
+  disabled?: boolean
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -20,8 +21,9 @@ export const Button: React.FC<ButtonProps> = ({
   icon,
   isLoading = false,
   hideTextOnMobile = false,
+  disabled = false,
 }: ButtonProps) => (
-  <ButtonEl color={color} onClick={onClick} isLoading={isLoading}>
+  <ButtonEl color={color} onClick={onClick} isLoading={isLoading} disabled={disabled}>
     {icon && <Icon hideTextOnMobile={hideTextOnMobile}>{icon}</Icon>}
     <ButtonText hideTextOnMobile={hideTextOnMobile}>{children}</ButtonText>
     {isLoading && <LoadingIcon />}
@@ -71,6 +73,13 @@ const ButtonEl = styled.button<{ isLoading: boolean }>`
     padding-right: 40px;
     `}
     `}
+
+  &:disabled {
+    opacity: 0.5;
+    &:hover {
+      opacity: 0.5;
+    }
+  }
 
   &:focus {
     outline-color: var(--orange);

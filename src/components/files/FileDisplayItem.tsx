@@ -126,6 +126,7 @@ const ItemEl = styled.li`
 const ItemContent = styled.div`
   display: flex;
   align-items: center;
+  flex: 1;
 `
 
 const ItemSize = styled.div`
@@ -141,7 +142,7 @@ const ItemSize = styled.div`
   ${device.sm`
     padding: 10px 30px 10px 0;
     margin-right: 30px;
-    width: 100px;
+    flex: 0 0 100px;
   `}
 
   p {
@@ -171,6 +172,8 @@ const ItemLink = styled.a`
   color: var(--black);
   margin-right: 25px;
   display: none;
+  text-align: center;
+  line-height: 1.2;
 
   ${device.sm`
     display: block;
@@ -182,8 +185,7 @@ const ItemActions = styled.div`
   padding-left: 10px;
 
   ${device.sm`
-    display: block;
-    padding-left: 0;
+    display: flex;
   `}
 
   ${device.md`

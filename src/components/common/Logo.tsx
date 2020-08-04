@@ -1,11 +1,11 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
-import starUrl from '../../assets/logo.svg'
+import LogoUrl from '../../assets/logo.svg'
 import { rem } from 'polished'
 
 export const Logo: FC = () => (
   <LogoWrapper>
-    <LogoImg src={starUrl} alt="Slack Deletron Logo" />
+    <LogoImg src={LogoUrl} alt="Slack Deletron Logo" />
     <LogoText>Slack Deletron</LogoText>
   </LogoWrapper>
 )

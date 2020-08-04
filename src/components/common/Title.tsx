@@ -35,7 +35,7 @@ const BaseStyles = `
   text-transform: uppercase;
   font-weight: 400;
   line-height: 1.2;
-  margin: 0;
+  margin-bottom: 0;
   letter-spacing: 0.11em;
 `
 
@@ -50,6 +50,7 @@ const TitleH2 = styled.h2`
 const TitleH3 = styled.h3`
   ${BaseStyles}
   font-size: var(--fs-lg);
+  margin-top: 30px;
 `
 const TitleH4 = styled.h4`
   ${BaseStyles}
