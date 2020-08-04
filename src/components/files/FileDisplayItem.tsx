@@ -6,7 +6,6 @@ import { useRecoilValue } from 'recoil'
 import { ReactComponent as Close } from '../../assets/close.svg'
 import { formatBytes } from '../../utils'
 import { Button } from '../common/Button'
-import { Title } from '../common/Title'
 import { userDetailsState } from '../../state'
 import { device } from '../../styles'
 
@@ -56,7 +55,7 @@ export const FileDisplayItem: FC<FileDisplayItemProps> = ({ file }: FileDisplayI
           <p>{unit}</p>
         </ItemSize>
         <div style={{ flex: 1 }}>
-          <Title type="p">{file.name}</Title>
+          <ItemTitle>{file.name}</ItemTitle>
           <ItemDetails>
             {channel.isChannel ? 'Posted' : 'Shared'} {format(fromUnixTime(file.created), 'MMMM dd, yyyy - HH:mm')}{' '}
             {channel.isChannel ? `in #${channel.name}` : `with ${channel.name}`}
@@ -123,13 +122,26 @@ const ItemEl = styled.li`
   }
 `
 
+const ItemTitle = styled.p`
+  width: 93%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  font-weight: 400;
+  line-height: 1.2;
+  margin-bottom: 0;
+  letter-spacing: 0.11em;
+  font-size: var(--fs);
+`
+
 const ItemContent = styled.div`
   display: flex;
   align-items: center;
   width: 85%;
 
   ${device.sm`
-    width: auto;
+    width: 60%;
   `}
 `
 
