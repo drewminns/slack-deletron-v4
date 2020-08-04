@@ -4,7 +4,7 @@ import fetch from 'cross-fetch'
 
 import { issueJWT } from '../../shared'
 
-const { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI } = process.env || ''
+const { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, REDIRECT_ROOT } = process.env || ''
 
 const generateSlackOAuthURI = (code: string): string => {
   return url.format({
@@ -31,7 +31,7 @@ export default async (req: NowRequest, res: NowResponse) => {
     }
     const token = issueJWT(slackOAuthFetchResponse.authed_user.access_token, slackOAuthFetchResponse.authed_user.id)
     const redirectPath = url.format({
-      pathname: 'http://localhost:3000',
+      pathname: REDIRECT_ROOT,
       query: {
         token,
       },
