@@ -9,7 +9,7 @@ export const Loading: FC = () => (
   <LoadingWrapper>
     <LoadingEl>
       <Logo />
-      <LoadingText>Loading</LoadingText>
+      <LoadingText aria-live="assertive">Loading</LoadingText>
     </LoadingEl>
   </LoadingWrapper>
 )

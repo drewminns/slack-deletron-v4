@@ -1,6 +1,6 @@
 import React, { FC, useEffect } from 'react'
-import styled from 'styled-components'
-import { useSetRecoilState, useRecoilState, useRecoilValue } from 'recoil'
+import styled, { css } from 'styled-components'
+import { useRecoilValue } from 'recoil'
 
 import useFetchFiles from '../../hooks/useFetchFiles'
 
@@ -10,7 +10,11 @@ import { formState, fetchedFilesState, fetchedPagesState } from '../../state'
 import { FileDisplayItem } from './FileDisplayItem'
 import { Button } from '../common/Button'
 
-export const FileList: FC = () => {
+type FilesListProps = {
+  isDeleting: boolean
+}
+
+export const FileList: FC<FilesListProps> = ({ isDeleting }: FilesListProps) => {
   const { fetchFiles } = useFetchFiles()
 
   const formData = useRecoilValue(formState)
@@ -31,7 +35,7 @@ export const FileList: FC = () => {
 
   return (
     <>
-      <FileListList>
+      <FileListList isDeleting={isDeleting}>
         {fetchedFiles.map((file: FileResponse) => (
           <FileDisplayItem key={file.id} file={file} />
         ))}
@@ -49,19 +53,48 @@ export const FileList: FC = () => {
           </Button>
         </PaginateContainer>
       ) : null}
+      {isDeleting && (
+        <DeletingBackground>
+          <DeletingText aria-live="assertive">Deleting {fetchedFiles.length} Files</DeletingText>
+        </DeletingBackground>
+      )}
     </>
   )
 }
 
 FileList.displayName = 'File List Section'
 
-const FileListList = styled.ul`
+const FileListList = styled.ul<{ isDeleting: boolean }>`
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
   padding: 0;
   margin: 0;
   list-style: none;
+  position: relative;
+  ${(props) =>
+    props.isDeleting &&
+    css`
+      user-select: none;
+      pointer-events: none;
+    `}
+`
+const DeletingBackground = styled.div`
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+`
+
+const DeletingText = styled.p`
+  margin: auto;
+  text-transform: uppercase;
+  font-size: var(--fs-lg);
+  font-weight: 400;
+  letter-spacing: 0.11em;
 `
 
 const PaginateContainer = styled.div`

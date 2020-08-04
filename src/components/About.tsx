@@ -19,19 +19,19 @@ export const About: FC<AboutProps> = ({ handleAboutVisibility }: AboutProps) => 
         <Close />
       </AboutClose>
       <AboutContent>
-        <Title type="h3">What is Slack Deletron?</Title>
+        <AboutTitle>What is Slack Deletron?</AboutTitle>
         <p>
-          Slack Deletron is a tool that allows users to search and delete files from your Slack account. Using the
+          Slack Deletron is an app that allows users to search and delete files from their Slack team account. Using the
           available Slack API tools, the Deletron stores nothing but an identifier to log in. All files are pulled
-          directly from Slack itself.
+          directly from Slack itself. You can only delete files you have shared, and cannot view or access others.
         </p>
-        <Title type="h3">Why make this thing?</Title>
+        <AboutTitle>Why make this thing?</AboutTitle>
         <p>
           Free Slack accounts have a limit of files that the space can host. After a while, old messages are deleted in
           place of file storage. Deleting files through Slack is a highly manual process, so using the Slack API, this
           app helps users bulk delete files.
         </p>
-        <Title type="h3">Who made this?</Title>
+        <AboutTitle>Who made this?</AboutTitle>
         <p>
           <a href="https://drewminns.com" rel="noopener">
             Drew Minns
@@ -91,14 +91,20 @@ const AboutClose = styled.button`
 const AboutCloseText = styled.span`
   text-transform: uppercase;
   font-size: var(--fs-sm);
-  letter-spacing: 0.11em;
   display: inline-block;
   margin-right: 7px;
+`
+
+const AboutTitle = styled.h2`
+  margin-bottom: var(--fs-lg);
+  font-weight: 400;
 `
 
 const AboutContent = styled.div`
   padding: 30px;
   margin: auto;
+  font-size: var(--fs);
+  line-height: 2;
 
   ${device.sm`
     width: 75%;

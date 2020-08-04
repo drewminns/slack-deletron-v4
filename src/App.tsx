@@ -57,9 +57,9 @@ export const App: React.FC = () => {
           />
           {formVisible && <Form handleFormSubmit={fetchFiles} toggleFormVisibility={toggleFormVisibility} />}
         </HeaderContainer>
-        <FileWrapper isDeleting={isDeleting}>
+        <FileWrapper>
           {fetchedFiles.length ? (
-            <FileList />
+            <FileList isDeleting={isDeleting} />
           ) : (
             <FileNone>
               <p>No files found. Either you got them all, or you should try filtering </p>
@@ -99,12 +99,10 @@ const HeaderContainer = styled.div`
   border-bottom: 1px solid var(--grey);
 `
 
-const FileWrapper = styled.div<{ isDeleting: boolean }>`
+const FileWrapper = styled.div`
   padding: 10px;
   margin-top: 187px;
   padding-bottom: 70px;
-  opacity: ${(props) => (props.isDeleting ? 0.3 : 1)};
-  pointer-events: ${(props) => (props.isDeleting ? 'none' : 'auto')};
 
   ${device.sm`
     margin-top: 160px;
