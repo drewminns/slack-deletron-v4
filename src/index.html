@@ -7,7 +7,7 @@
     <meta name="slack-app-id" content="A016LB0GY1K" />
     <meta
       http-equiv="Content-Security-Policy"
-      content="img-src 'self' data: https://*.gravatar.com https://*.slack.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;"
+      content="img-src 'self' data: https://*.gravatar.com https://*.slack.com https://*.slack-edge.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;"
     />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
     <!-- Primary Meta Tags -->
@@ -40,5 +40,16 @@
   </head>
   <body>
     <div id="root"></div>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-76483887-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || []
+      function gtag() {
+        dataLayer.push(arguments)
+      }
+      gtag('js', new Date())
+
+      gtag('config', 'UA-76483887-1')
+    </script>
   </body>
 </html>

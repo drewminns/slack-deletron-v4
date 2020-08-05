@@ -49,7 +49,7 @@ export default function useFetchFiles() {
       const filesFetch = await fetch('https://slack.com/api/files.list?' + new URLSearchParams(params))
       const files: FilesListReponse = await filesFetch.json()
       if (files.ok) {
-        setFetchedFiles(files.files)
+        setFetchedFiles(files.files.reverse())
         setFetchedPages(files.paging)
         if (isInitialFetching) {
           toggleInitialFetching(false)
