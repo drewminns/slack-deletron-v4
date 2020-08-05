@@ -3,7 +3,7 @@ import { fromUnixTime, format } from 'date-fns'
 import styled from 'styled-components'
 import { useRecoilValue } from 'recoil'
 
-import { ReactComponent as Close } from '../../assets/close.svg'
+import { ReactComponent as Trash } from '../../assets/trash.svg'
 import { formatBytes } from '../../utils'
 import { Button } from '../common/Button'
 import { userDetailsState } from '../../state'
@@ -75,7 +75,7 @@ export const FileDisplayItem: FC<FileDisplayItemProps> = ({ file }: FileDisplayI
           hideTextOnMobile
           isLoading={isDeleting}
           color={'orange'}
-          icon={<Close />}
+          icon={<Trash />}
           onClick={() => deleteFile(file.id, file.size)}
         >
           Delete File
