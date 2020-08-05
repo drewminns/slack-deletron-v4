@@ -53,6 +53,7 @@ const ChannelSelect = styled.select`
 
   &:focus,
   &:active {
+    font-size: 16px;
     border: 1px solid var(--orange);
   }
 `

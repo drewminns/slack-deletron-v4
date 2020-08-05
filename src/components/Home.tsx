@@ -33,11 +33,11 @@ const LineBreak = styled.span`
 
 const HomeWrapper = styled.div`
   display: flex;
-  min-height: calc(100vh - 85px);
-  padding: 25px 25px 80px;
+  padding: 50px 25px 80px;
 
   ${device.sm`
     min-height: calc(100vh - 50px);
+    padding: 25px 25px 80px;
   `}
 `
 const HomeContent = styled.div`

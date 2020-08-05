@@ -61,6 +61,7 @@ const Label = styled.label`
 `
 
 const DatePickerInput = styled.input`
+appearance: none;
 border 1px solid var(--white);
 color: var(--white);
 background-color: var(--black);
@@ -72,6 +73,7 @@ outline: none;
 
   &:focus,
   &:active {
+    font-size: 16px;
     border: 1px solid var(--orange);
   }
 

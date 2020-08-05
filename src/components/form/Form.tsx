@@ -113,7 +113,8 @@ const FormContainer = styled.div`
   height: 100%;
   padding: 50px 30px;
   position: relative;
-  overflow-y: auto;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
 
   ${device.sm`
     padding: 70px 45px;

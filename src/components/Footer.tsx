@@ -45,7 +45,7 @@ const FooterEl = styled.footer`
   justify-content: space-between;
   align-items: center;
   border-top: 1px solid var(--grey);
-  padding: 5px 10px;
+  padding: 5px 10px 10px;
   flex-direction: column;
 
   ${device.sm`

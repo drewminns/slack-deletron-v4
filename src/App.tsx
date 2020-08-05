@@ -108,7 +108,7 @@ const FileWrapper = styled.div`
   padding-bottom: 70px;
 
   ${device.sm`
-    margin-top: 160px;
+    margin-top: 164px;
     padding: 10px 25px;
     padding-bottom: 40px;
   `};

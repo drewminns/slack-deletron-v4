@@ -123,14 +123,11 @@ const ItemEl = styled.li`
 `
 
 const ItemTitle = styled.p`
-  width: 93%;
-  white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
   text-transform: uppercase;
   font-weight: 400;
   line-height: 1.2;
-  margin-bottom: 0;
+  margin: 0;
   letter-spacing: 0.11em;
   font-size: var(--fs);
 `

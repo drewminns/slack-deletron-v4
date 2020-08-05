@@ -77,7 +77,8 @@ const AboutWrapper = styled.div`
   color: var(--white);
   display: flex;
   align-items: center;
-  overflow-y: auto;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
 `
 
 const AboutClose = styled.button`
