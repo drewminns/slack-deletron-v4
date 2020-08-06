@@ -25,7 +25,7 @@ import useFetchFiles from './hooks/useFetchFiles'
 import useDeleteFiles from './hooks/useDeleteFiles'
 
 export const App: React.FC = () => {
-  const [formVisible, toggleFormVisibility] = useState<boolean>(true)
+  const [formVisible, toggleFormVisibility] = useState<boolean>(false)
   const [aboutVisible, toggleAboutVisibility] = useState<boolean>(false)
 
   const { token } = useRecoilValue(userDetailsState)
