@@ -78,12 +78,16 @@ export const FilesDetails: FC<FilesDetailsProps> = ({
     }
   }
 
+  const filters = formData ? (
+    <Count>{Object.values(formData).filter((form) => form && form !== 'ALL').length}</Count>
+  ) : null
+
   return (
     <Wrapper>
       <ContainerLeft>
         <Separator>
           <Button onClick={() => toggleFormVisibility(true)} icon={<Filter />}>
-            Filters {formData && <Count>{Object.values(formData).filter((form) => form).length}</Count>}
+            Filters {filters}
           </Button>
         </Separator>
         {handleFilters()}
