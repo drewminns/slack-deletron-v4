@@ -91,12 +91,13 @@ const ItemEl = styled.li`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
-  padding-bottom: 15px;
+  margin-bottom: 25px;
+  padding-bottom: 25px;
   position: relative;
   width: 100%;
 
   ${device.sm`
+    margin-bottom: 20px;
     padding: 0 40px 15px;
   `}
 
@@ -129,7 +130,11 @@ const ItemTitle = styled.p`
   line-height: 1.2;
   margin: 0;
   letter-spacing: 0.11em;
+  font-size: var(--fs-xs);
+
+  ${device.sm`
   font-size: var(--fs);
+  `}
 `
 
 const ItemContent = styled.div`
@@ -160,7 +165,7 @@ const ItemSize = styled.div`
 
   p {
     margin: 0;
-    font-size: var(--fs);
+    font-size: var(--fs-xs);
     line-height: 1.3;
 
     ${device.sm`

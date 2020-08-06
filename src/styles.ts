@@ -71,7 +71,7 @@ export const GlobalStyle = createGlobalStyle`
     font-size: var(--fs, ${theme.fontSize});
     color: var(--color-black, ${theme.colors.black});
     line-height: 1.7;
-    min-height: -webkit-fill-available;
     min-height: 100vh;
+    min-height: -webkit-fill-available;
   }
 `

@@ -7,8 +7,7 @@ import { device } from '../styles'
 import { userDetailsState } from '../state'
 import { LOCALSTORAGE_TOKEN_NAME } from '../hooks/useLogin'
 
-import { Logo } from './common/Logo'
-import { Button } from './common/Button'
+import { Logo, Button } from './common'
 
 export const Navigation: FC = () => {
   const [userDetails, setUserDetails] = useRecoilState(userDetailsState)

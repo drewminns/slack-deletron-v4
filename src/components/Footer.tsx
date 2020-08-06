@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { getYear } from 'date-fns'
 
 import { device } from '../styles'
-
 import { ReactComponent as Twitter } from '../assets/twitter.svg'
 
 type AboutProps = {

@@ -8,7 +8,7 @@ import { FileResponse } from '../../../shared'
 import { formState, fetchedFilesState, fetchedPagesState } from '../../state'
 
 import { FileDisplayItem } from './FileDisplayItem'
-import { Button } from '../common/Button'
+import { Button } from '../common'
 
 type FilesListProps = {
   isDeleting: boolean

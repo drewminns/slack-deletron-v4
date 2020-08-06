@@ -25,7 +25,7 @@ import useFetchFiles from './hooks/useFetchFiles'
 import useDeleteFiles from './hooks/useDeleteFiles'
 
 export const App: React.FC = () => {
-  const [formVisible, toggleFormVisibility] = useState<boolean>(false)
+  const [formVisible, toggleFormVisibility] = useState<boolean>(true)
   const [aboutVisible, toggleAboutVisibility] = useState<boolean>(false)
 
   const { token } = useRecoilValue(userDetailsState)
@@ -104,7 +104,7 @@ const HeaderContainer = styled.div`
 
 const FileWrapper = styled.div`
   padding: 10px;
-  margin-top: 187px;
+  margin-top: 200px;
   padding-bottom: 70px;
 
   ${device.sm`

@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import styled from 'styled-components'
 import { device } from '../styles'
 
-import { Logo } from './common/Logo'
+import { Logo } from './common'
 
 type HomeProps = {
   errorString: string

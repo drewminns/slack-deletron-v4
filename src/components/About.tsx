@@ -4,7 +4,6 @@ import FocusLock from 'react-focus-lock'
 
 import { device } from '../styles'
 import { ReactComponent as Close } from '../assets/close.svg'
-import { Title } from './common/Title'
 
 type AboutProps = {
   handleAboutVisibility: (val: boolean) => void

@@ -16,7 +16,7 @@ export const generateSearchParams = (formdata: any, user: string, token: string,
     for (const [key, value] of Object.entries(formdata)) {
       if (key === 'channels' && value !== 'ALL') {
         params.channel = formdata.channels
-      } else if (value === true && key !== 'displayDate') {
+      } else if (value === true && key !== 'show-date') {
         types += `${key},`
       } else if (key === 'startDate') {
         params.ts_from = getUnixTime(parseISO(value as string))

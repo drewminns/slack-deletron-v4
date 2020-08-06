@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import { device } from '../styles'
 
-import { Logo } from './common/Logo'
+import { Logo } from './common'
 
 export const Loading: FC = () => (
   <LoadingWrapper>
@@ -19,6 +19,10 @@ Loading.displayName = 'Loading'
 const LoadingWrapper = styled.div`
   display: flex;
   min-height: 100vh;
+
+  @supports (-webkit-touch-callout: none) {
+    min-height: -webkit-fill-available;
+  }
 `
 
 const LoadingEl = styled.div`
@@ -34,6 +38,6 @@ const LoadingText = styled.p`
   margin: 0;
 
   ${device.sm`
-  letter-spacing: 0.25em;
+    letter-spacing: 0.25em;
   `}
 `

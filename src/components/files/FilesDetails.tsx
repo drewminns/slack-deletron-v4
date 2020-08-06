@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react'
+import React, { FC } from 'react'
 import { useRecoilValue } from 'recoil'
 import styled from 'styled-components'
 
@@ -8,7 +8,6 @@ import useFetchFiles from '../../hooks/useFetchFiles'
 import { fetchedFilesState, deleteFileSizeState, fetchedPagesState, userDetailsState, formState } from '../../state'
 import { ReactComponent as Filter } from '../../assets/filter.svg'
 import { ReactComponent as Close } from '../../assets/close.svg'
-import { ReactComponent as TailSpin } from '../../assets/tailSpin.svg'
 
 import { Button } from '../common/Button'
 
@@ -62,11 +61,13 @@ export const FilesDetails: FC<FilesDetailsProps> = ({
       const channelList = channels.channels.concat(channels.ims)
       const channelName = channelList.filter((el: any) => el.id === formData.channels)[0]
 
+      const date = formData.startDate ? `from ${formData.startDate} to ${formData.endDate}` : ''
+
       return (
         <>
           <DetailText>{`All ${fileGroup.join(', ')} ${
             channelName ? `in ${channelName.name || channelName.user_name}` : ''
-          } from ${formData.startDate} to ${formData.endDate}`}</DetailText>
+          } ${date}`}</DetailText>
           <MiniButton onClick={() => fetchFiles()}>
             <Close />
           </MiniButton>
@@ -120,7 +121,7 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px;
+  padding: 15px 10px;
   border-top: 1px solid var(--grey);
 
   ${device.sm`
@@ -178,8 +179,9 @@ const MiniButton = styled.button`
   background-color: var(--black);
   margin-left: 10px;
   border-radius: 50px;
-  padding: 2px 6px 3px;
+  padding: 2px 6px 3px 6px;
   border: none;
+  line-height: 1.1;
 `
 
 const Total = styled.p`
@@ -197,8 +199,8 @@ const Total = styled.p`
 
 const Count = styled.span`
   background-color: var(--white);
-  border-radius: 5px;
-  padding: 1px 4px;
+  border-radius: 50%;
+  padding: 1px 4px 1px 5px;
   color: var(--black);
   margin-left: 5px;
 

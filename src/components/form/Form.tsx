@@ -13,7 +13,7 @@ import { formState } from '../../state'
 import { DatePicker } from './DatePicker'
 import { ChannelSelector } from './ChannelSelector'
 import { TypeInputList } from './TypeInputList'
-import { Title } from '../common/Title'
+import { Title, Checkbox } from '../common'
 
 export enum FILE_TYPES {
   images = 'Images',
@@ -36,6 +36,7 @@ export const Form: FC<FormProps> = ({ handleFormSubmit, toggleFormVisibility }: 
   })
 
   const today = format(new Date(), 'yyyy-MM-dd')
+  const watchedDate = watch('show-date')
   const watchedStartDate = watch('startDate') || format(subDays(parseISO(today), 7), 'yyyy-MM-dd')
   const watchedEndDate = watch('endDate') || today
 
@@ -73,12 +74,15 @@ export const Form: FC<FormProps> = ({ handleFormSubmit, toggleFormVisibility }: 
               <TypeInputList register={register} types={Object.entries(FILE_TYPES)} />
             </FormRow>
             <FormRow>
-              <DatePicker
-                register={register}
-                today={today}
-                endDateValue={watchedEndDate}
-                startDateValue={watchedStartDate}
-              />
+              <Checkbox handleClick={register} name="show-date" label="Use Date Range" />
+              {watchedDate && (
+                <DatePicker
+                  register={register}
+                  today={today}
+                  endDateValue={watchedEndDate}
+                  startDateValue={watchedStartDate}
+                />
+              )}
             </FormRow>
             <FormRow>
               <FormButton type="submit" value="Apply Filters" />
