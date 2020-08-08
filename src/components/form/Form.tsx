@@ -21,6 +21,7 @@ export enum FILE_TYPES {
   gdocs = 'Google Docs',
   spaces = 'Posts',
   snippets = 'Snippets',
+  videos = 'Videos',
 }
 
 type FormProps = {

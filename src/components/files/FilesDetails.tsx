@@ -54,6 +54,10 @@ export const FilesDetails: FC<FilesDetailsProps> = ({
         fileGroup.push('Snippets')
       }
 
+      if (formData.videos) {
+        fileGroup.push('Videos')
+      }
+
       if (formData.spaces) {
         fileGroup.push('Spaces')
       }
