@@ -28,6 +28,19 @@ export const Footer: FC<AboutProps> = ({ handleAboutVisibility }: AboutProps) =>
           Drew Minns
         </a>
       </FooterCopy>
+      <a
+        href="https://www.producthunt.com/posts/slack-deletron-2?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-slack-deletron-2"
+        target="_blank"
+        rel="noreferrer"
+      >
+        <img
+          src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=230085&theme=light"
+          alt="Slack Deletron - Search and delete your Slack workspaces unwanted files  | Product Hunt Embed"
+          style={{ width: '185px', height: '54px' }}
+          width="185px"
+          height="54px"
+        />
+      </a>
     </FooterSection>
   </FooterEl>
 )

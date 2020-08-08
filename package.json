@@ -8,6 +8,11 @@
     "dev": "npx webpack-dev-server --mode development --devtool inline-source-map --hot --port $PORT",
     "build": "NODE_ENV=production webpack -p --mode=production --config=webpack.prod.js"
   },
+  "browserslist": [
+    ">0.25%",
+    "not ie 11",
+    "not op_mini all"
+  ],
   "prettier": {
     "semi": false,
     "trailingComma": "all",
