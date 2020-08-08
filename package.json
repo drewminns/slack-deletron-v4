@@ -19,6 +19,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@sentry/react": "^5.20.1",
     "@vercel/node": "^1.7.1",
     "cross-fetch": "^3.0.5",
     "date-fns": "^2.14.0",

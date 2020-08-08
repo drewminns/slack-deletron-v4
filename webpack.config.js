@@ -45,6 +45,7 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('development'),
+      'process.env.SENTRY_CONFIG': JSON.stringify(process.env.SENTRY_CONFIG),
     }),
     new HtmlWebpackPlugin({
       template: './src/index.html',

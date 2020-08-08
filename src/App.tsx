@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from 'react'
 import { useRecoilValue } from 'recoil'
 import styled from 'styled-components'
+import * as Sentry from '@sentry/react'
 
 import { device } from './styles'
 
 import { ReactComponent as Restart } from './assets/restart.svg'
 import { ReactComponent as Close } from './assets/close.svg'
 
-import { Navigation } from './components/Navigation'
-import { Loading } from './components/Loading'
-import { Home } from './components/Home'
-import { FileList } from './components/files/FileList'
-import { FilesDetails } from './components/files/FilesDetails'
-import { Form } from './components/form/Form'
-import { Button } from './components/common/Button'
-import { Footer } from './components/Footer'
 import { About } from './components/About'
-import { Banner } from './components/common/Banner'
+import { Footer } from './components/Footer'
+import { Home } from './components/Home'
+import { Loading } from './components/Loading'
+import { Navigation } from './components/Navigation'
+
+import { FileList, FilesDetails } from './components/files'
+import { Form } from './components/form/Form'
+import { Button, Banner } from './components/common'
 
 import { userDetailsState, fetchedFilesState, formState, applicationNoticeState } from './state'
 
@@ -47,7 +47,7 @@ export const App: React.FC = () => {
     return <Loading />
   }
 
-  return token ? (
+  const content = token ? (
     !isInitialFetching ? (
       <>
         {applicationNotice.active && <Banner value={applicationNotice.value} type={applicationNotice.type} />}
@@ -87,6 +87,32 @@ export const App: React.FC = () => {
       <Footer handleAboutVisibility={toggleAboutVisibility} />
       {aboutVisible && <About handleAboutVisibility={toggleAboutVisibility} />}
     </>
+  )
+
+  return (
+    <Sentry.ErrorBoundary
+      fallback={({ error, componentStack, resetError }) => (
+        <ErrorBody>
+          <div>
+            <p>
+              There was an error in loading this page.{' '}
+              <ErrorButton
+                onClick={() => {
+                  resetError()
+                }}
+              >
+                Reload this page
+              </ErrorButton>
+            </p>
+            <p>{error?.toString()}</p>
+            <p>{componentStack}</p>
+          </div>
+        </ErrorBody>
+      )}
+      showDialog
+    >
+      {content}
+    </Sentry.ErrorBoundary>
   )
 }
 
@@ -135,4 +161,17 @@ const ButtonGroup = styled.div`
   & > button:first-child {
     margin-right: 10px;
   }
+`
+
+const ErrorBody = styled.div`
+  padding: 25px;
+`
+
+const ErrorButton = styled.button`
+  cursor: pointer;
+  appearance: none;
+  background: var(--black);
+  color: var(--white);
+  border: none;
+  padding: 8px 15px;
 `
