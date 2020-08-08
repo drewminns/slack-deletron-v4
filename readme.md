@@ -16,3 +16,5 @@ Take the URL given and set that url as the REDIRECT_URI in Vercel with `api/auth
 Next, in slack, set the same url as the redirect URL.
 
 Next, have a party
+
+Updating soon.
