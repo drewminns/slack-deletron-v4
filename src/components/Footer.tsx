@@ -28,7 +28,7 @@ export const Footer: FC<AboutProps> = ({ handleAboutVisibility }: AboutProps) =>
           Drew Minns
         </a>
       </FooterCopy>
-      <a
+      <FooterPHLink
         href="https://www.producthunt.com/posts/slack-deletron-2?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-slack-deletron-2"
         target="_blank"
         rel="noreferrer"
@@ -36,11 +36,10 @@ export const Footer: FC<AboutProps> = ({ handleAboutVisibility }: AboutProps) =>
         <img
           src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=230085&theme=light"
           alt="Slack Deletron - Search and delete your Slack workspaces unwanted files  | Product Hunt Embed"
-          style={{ width: '185px', height: '54px' }}
           width="185px"
           height="54px"
         />
-      </a>
+      </FooterPHLink>
     </FooterSection>
   </FooterEl>
 )
@@ -101,4 +100,13 @@ const FooterButton = styled.button`
   &:hover {
     opacity: 0.8;
   }
+`
+
+const FooterPHLink = styled.a`
+  width: 160px;
+  display: none;
+
+  ${device.sm`
+    display: inline-block;
+  `}
 `
