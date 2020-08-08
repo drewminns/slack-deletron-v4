@@ -1,4 +1,4 @@
-# Slack Deletron API
+# Slack Deletron V4
 
 Uses Vercel Serverless functions
 
