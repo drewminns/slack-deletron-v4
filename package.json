@@ -1,7 +1,11 @@
 {
   "name": "slackdeletron",
   "version": "1.0.0",
-  "description": "",
+  "description": "Manage and delete your Slack Files",
+  "author": {
+    "name": "Drew Minns",
+    "url": "https://drewminns.com"
+  },
   "main": "index.js",
   "scripts": {
     "predev": "vercel env pull",
@@ -21,8 +25,7 @@
     "tabWidth": 2
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "license": "GPL-3.0-or-later",
   "dependencies": {
     "@sentry/react": "^5.20.1",
     "@vercel/node": "^1.7.1",
