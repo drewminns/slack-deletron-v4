@@ -12,8 +12,17 @@ export default function useLogin() {
   const setUserDetails = useSetRecoilState(userDetailsState)
 
   useEffect(() => {
-    if (new URLSearchParams(location.search).get('error')) {
-      setApplicationError({ active: true, value: 'Unable to login with your Slack account. Please try again' })
+    const error = new URLSearchParams(location.search).get('error')
+    if (error) {
+      if (error === 'access_denied') {
+        setApplicationError({
+          active: true,
+          value:
+            'Unable to login with your Slack Workspace. Please contact your workspace admin or try again with another account',
+        })
+      } else {
+        setApplicationError({ active: true, value: 'Unable to login with your Slack account. Please try again' })
+      }
       setLoading(false)
       return
     }
