@@ -1,4 +1,4 @@
-import Sentry from '@sentry/node'
+import * as Sentry from '@sentry/node'
 const { SENTRY_CONFIG } = process.env || ''
 
 Sentry.init({
