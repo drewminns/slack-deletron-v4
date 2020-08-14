@@ -9,6 +9,8 @@ import {
   UserProfile,
   verifyToken,
   IMResponse,
+  captureException,
+  captureMessage,
 } from '../../shared'
 
 function filterChannels(channels: ChannelResponse[]): FilteredChannels[] {
@@ -52,6 +54,11 @@ export default verifyToken(async (req: NowRequest, res: NowResponse, userToken: 
       const profileData: User = await profileResponse.json()
 
       if (!profileData.ok || !channelsData.ok) {
+        captureMessage(
+          `api/userDetails.ts :: profiledata or channelsdata is not ok - profileData: ${JSON.stringify(
+            profileData,
+          )} | channelsData: ${JSON.stringify(channelsData)}`,
+        )
         res.status(401).json({ ok: false, error: 'Error Fetching User details' })
         return
       }
@@ -89,10 +96,12 @@ export default verifyToken(async (req: NowRequest, res: NowResponse, userToken: 
             .json({ ok: true, data: { token, channels: { channels: channelsList, ims: cleanIMResults }, profile } })
         })
         .catch((error) => {
+          captureException(error)
           res.status(401).json({ ok: false, error })
         })
     })
   } catch (error) {
+    captureException(error)
     res.status(401).json({ ok: false, error })
   }
 })

@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useSetRecoilState } from 'recoil'
+import * as Sentry from '@sentry/react'
+
 import { UserDetailsResponse } from '../../shared'
 import { userDetailsState, applicationNoticeState } from '../state'
 
@@ -55,11 +57,13 @@ export default function useLogin() {
           setApplicationError({ active: false, value: '' })
           setLoading(false)
         } else {
+          Sentry.captureMessage(`useLogin.ts - userProfileData.ok not ok - ${userProfileData}`)
           localStorage.removeItem(LOCALSTORAGE_TOKEN_NAME)
           setApplicationError({ active: true, value: 'Login Error' })
           setLoading(false)
         }
       } catch (error) {
+        Sentry.captureException(error)
         localStorage.removeItem(LOCALSTORAGE_TOKEN_NAME)
         setApplicationError({ active: true, value: error })
         setLoading(false)

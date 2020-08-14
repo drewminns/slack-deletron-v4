@@ -1,8 +1,9 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 import url from 'url'
 import fetch from 'cross-fetch'
+import Sentry from '@sentry/node'
 
-import { issueJWT } from '../../shared'
+import { issueJWT, captureException, captureMessage } from '../../shared'
 
 const { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, REDIRECT_ROOT } = process.env || ''
 
@@ -36,6 +37,7 @@ export default async (req: NowRequest, res: NowResponse) => {
       const slackOAuthFetch = await fetch(uri)
       const slackOAuthFetchResponse = await slackOAuthFetch.json()
       if (!slackOAuthFetchResponse.ok) {
+        captureMessage(`api/redirect.ts :: slackOAuthFetchResponse not ok - ${slackOAuthFetchResponse}`)
         res.status(401).json({ ok: false, error: slackOAuthFetchResponse.error })
         return
       }
@@ -49,6 +51,7 @@ export default async (req: NowRequest, res: NowResponse) => {
       res.writeHead(302, { Location: redirectPath })
       res.end()
     } catch (err) {
+      captureException(err)
       res.status(500).json({ ok: false, error: err })
       return
     }
