@@ -13,9 +13,6 @@ const styledComponentsTransformer = createStyledComponentsTransformer({
   minify: true,
 })
 
-const dotenv = require('dotenv')
-const env = dotenv.config().parsed
-
 module.exports = {
   entry: './src/index.tsx',
   mode: 'production',
@@ -56,7 +53,7 @@ module.exports = {
     new CleanWebpackPlugin(),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production'),
-      'process.env.SENTRY_CONFIG': JSON.stringify(env.SENTRY_CONFIG),
+      'process.env.SENTRY_CONFIG': JSON.stringify(process.env.SENTRY_CONFIG),
     }),
     new HtmlWebpackPlugin({
       template: './src/index.html',
