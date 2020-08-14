@@ -8,8 +8,16 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
 
+const createStyledComponentsTransformer = require('typescript-plugin-styled-components').default
+const styledComponentsTransformer = createStyledComponentsTransformer({
+  minify: true,
+})
+
+const dotenv = require('dotenv')
+const env = dotenv.config().parsed
+
 module.exports = {
-  entry: ['./src/index.tsx'],
+  entry: './src/index.tsx',
   mode: 'production',
   output: {
     filename: '[name].[hash].js',
@@ -29,6 +37,9 @@ module.exports = {
         use: [
           {
             loader: 'ts-loader',
+            options: {
+              getCustomTransformers: () => ({ before: [styledComponentsTransformer] }),
+            },
           },
         ],
       },
@@ -45,7 +56,7 @@ module.exports = {
     new CleanWebpackPlugin(),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production'),
-      'process.env.SENTRY_CONFIG': JSON.stringify(process.env.SENTRY_CONFIG || ''),
+      'process.env.SENTRY_CONFIG': JSON.stringify(env.SENTRY_CONFIG),
     }),
     new HtmlWebpackPlugin({
       template: './src/index.html',

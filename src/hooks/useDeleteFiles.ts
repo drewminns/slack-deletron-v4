@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil'
 
+import { captureMessage, captureException } from '../Errors'
+
 import { FileResponse } from '../../shared'
 import {
   applicationNoticeState,
@@ -46,9 +48,11 @@ export default function useDeleteFiles() {
           type: 'success',
         })
       } else {
+        captureMessage(`useDeleteFiles :: deletedFile ${JSON.stringify(deletedFile)}`)
         setApplicationNoticeState({ active: true, value: 'Error Deleting File - File Not Found', type: 'error' })
       }
     } catch (error) {
+      captureException(error)
       if (error === 'file_not_found') {
         setApplicationNoticeState({ active: true, value: 'Error Deleting File - File Not Found', type: 'error' })
       } else {
@@ -69,11 +73,13 @@ export default function useDeleteFiles() {
           deletedItems.push(file.id)
           deletedFileSizeBatch += file.size
         } else {
+          captureMessage(`useDeleteFiles :: deleteAll ${JSON.stringify(deleteQueuedFileResponse)}`)
           setApplicationNoticeState({ active: true, value: 'Error Deleting Files - Try Again', type: 'error' })
           break
         }
         await wait(500)
       } catch (err) {
+        captureException(err)
         setApplicationNoticeState({ active: true, value: 'Error Deleting Files - Try Again', type: 'error' })
         setIsDeleting(false)
       }

@@ -2,11 +2,17 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const webpack = require('webpack')
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
+const dotenv = require('dotenv')
+const createStyledComponentsTransformer = require('typescript-plugin-styled-components').default
+const styledComponentsTransformer = createStyledComponentsTransformer({
+  minify: true,
+})
 
 const dist = path.join(__dirname, 'dist')
+const env = dotenv.config().parsed
 
 module.exports = {
-  entry: ['./src/index.tsx'],
+  entry: './src/index.tsx',
   mode: 'development',
   output: {
     filename: '[name].[hash].js',
@@ -26,6 +32,9 @@ module.exports = {
         use: [
           {
             loader: 'ts-loader',
+            options: {
+              getCustomTransformers: () => ({ before: [styledComponentsTransformer] }),
+            },
           },
         ],
       },
@@ -38,6 +47,7 @@ module.exports = {
   devServer: {
     historyApiFallback: true,
     publicPath: '/',
+    hot: true,
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.svg'],
@@ -45,7 +55,7 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('development'),
-      'process.env.SENTRY_CONFIG': JSON.stringify(process.env.SENTRY_CONFIG),
+      'process.env.SENTRY_CONFIG': JSON.stringify(env.SENTRY_CONFIG),
     }),
     new HtmlWebpackPlugin({
       template: './src/index.html',

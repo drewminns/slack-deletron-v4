@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useRecoilValue } from 'recoil'
 import styled from 'styled-components'
-import * as Sentry from '@sentry/react'
 
 import { device } from './styles'
 
@@ -47,7 +46,7 @@ export const App: React.FC = () => {
     return <Loading />
   }
 
-  const content = token ? (
+  return token ? (
     !isInitialFetching ? (
       <>
         {applicationNotice.active && <Banner value={applicationNotice.value} type={applicationNotice.type} />}
@@ -84,35 +83,10 @@ export const App: React.FC = () => {
   ) : (
     <>
       <Home errorString={applicationNotice.value} />
+      <button>send event</button>
       <Footer handleAboutVisibility={toggleAboutVisibility} />
       {aboutVisible && <About handleAboutVisibility={toggleAboutVisibility} />}
     </>
-  )
-
-  return (
-    <Sentry.ErrorBoundary
-      fallback={({ error, componentStack, resetError }) => (
-        <ErrorBody>
-          <div>
-            <p>
-              There was an error in loading this page.{' '}
-              <ErrorButton
-                onClick={() => {
-                  resetError()
-                }}
-              >
-                Reload this page
-              </ErrorButton>
-            </p>
-            <p>{error?.toString()}</p>
-            <p>{componentStack}</p>
-          </div>
-        </ErrorBody>
-      )}
-      showDialog
-    >
-      {content}
-    </Sentry.ErrorBoundary>
   )
 }
 
@@ -161,17 +135,4 @@ const ButtonGroup = styled.div`
   & > button:first-child {
     margin-right: 10px;
   }
-`
-
-const ErrorBody = styled.div`
-  padding: 25px;
-`
-
-const ErrorButton = styled.button`
-  cursor: pointer;
-  appearance: none;
-  background: var(--black);
-  color: var(--white);
-  border: none;
-  padding: 8px 15px;
 `

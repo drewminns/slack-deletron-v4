@@ -59,7 +59,6 @@ export default verifyToken(async (req: NowRequest, res: NowResponse, userToken: 
         } else if (!channelsData.ok) {
           captureMessage(`api/userDetails.ts :: channelsdata is not ok | channelsData: ${JSON.stringify(channelsData)}`)
         }
-
         res.status(401).json({ ok: false, error: 'Error Fetching User details' })
         return
       }

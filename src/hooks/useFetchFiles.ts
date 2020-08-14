@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { useSetRecoilState, useRecoilValue } from 'recoil'
 import { parseISO, getUnixTime, addDays } from 'date-fns'
 
+import { captureMessage, captureException } from '../Errors'
+
 import { userDetailsState, fetchedFilesState, applicationNoticeState, fetchedPagesState, formState } from '../state'
 import { FilesListReponse } from '../../shared'
 
@@ -55,9 +57,11 @@ export default function useFetchFiles() {
           toggleInitialFetching(false)
         }
       } else {
+        captureMessage(`useFetchFiles :: filesFetch ${JSON.stringify(files)}`)
         setApplicationError({ active: true, value: files.error as string })
       }
     } catch (error) {
+      captureException(error)
       setApplicationError({ active: true, value: error })
     }
   }
