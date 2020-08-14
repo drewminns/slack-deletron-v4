@@ -5,6 +5,7 @@ if (SENTRY_CONFIG) {
   Sentry.init({
     dsn: SENTRY_CONFIG,
     environment: process.env.NODE_ENV,
+    release: process.env.NODE_ENV !== 'development' ? 'SlackDeletron@' + process.env.SENTRY_RELEASE : undefined,
   })
 } else {
   console.log('Sentry not configured')

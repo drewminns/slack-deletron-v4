@@ -5,7 +5,13 @@ import styled from 'styled-components'
 const SENTRY_CONFIG = process.env.SENTRY_CONFIG
 
 if (SENTRY_CONFIG) {
-  Sentry.init({ dsn: SENTRY_CONFIG, environment: process.env.NODE_ENV })
+  const config = {
+    dsn: SENTRY_CONFIG,
+    environment: process.env.NODE_ENV,
+    release: process.env.NODE_ENV !== 'development' ? 'SlackDeletron@' + process.env.SENTRY_RELEASE : undefined,
+  }
+
+  Sentry.init(config)
 } else {
   console.warn('Sentry not configured')
 }

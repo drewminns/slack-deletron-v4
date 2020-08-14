@@ -53,7 +53,8 @@ module.exports = {
     new CleanWebpackPlugin(),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production'),
-      'process.env.SENTRY_CONFIG': JSON.stringify(process.env.SENTRY_CONFIG),
+      'process.env.SENTRY_CONFIG': JSON.stringify(process.env.NEXT_PUBLIC_SENTRY_DSN),
+      'process.env.SENTRY_RELEASE': JSON.stringify(process.env.VERCEL_GITHUB_COMMIT_SHA),
     }),
     new HtmlWebpackPlugin({
       template: './src/index.html',
