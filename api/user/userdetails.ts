@@ -54,11 +54,12 @@ export default verifyToken(async (req: NowRequest, res: NowResponse, userToken: 
       const profileData: User = await profileResponse.json()
 
       if (!profileData.ok || !channelsData.ok) {
-        captureMessage(
-          `api/userDetails.ts :: profiledata or channelsdata is not ok - profileData: ${JSON.stringify(
-            profileData,
-          )} | channelsData: ${JSON.stringify(channelsData)}`,
-        )
+        if (!profileData.ok) {
+          captureMessage(`api/userDetails.ts :: profiledata is not ok | profileData: ${JSON.stringify(profileData)}`)
+        } else if (!channelsData.ok) {
+          captureMessage(`api/userDetails.ts :: channelsdata is not ok | channelsData: ${JSON.stringify(channelsData)}`)
+        }
+
         res.status(401).json({ ok: false, error: 'Error Fetching User details' })
         return
       }
