@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react'
-import { fromUnixTime, format } from 'date-fns'
+import { fromUnixTime, format, isValid } from 'date-fns'
 import styled from 'styled-components'
 import { useRecoilValue } from 'recoil'
 
@@ -47,6 +47,8 @@ export const FileDisplayItem: FC<FileDisplayItemProps> = ({ file }: FileDisplayI
 
   const { amount, unit } = formatBytes(file.size)
 
+  const isValidDate = file.created && isValid(file.created)
+
   return (
     <ItemEl>
       <ItemContent>
@@ -57,7 +59,8 @@ export const FileDisplayItem: FC<FileDisplayItemProps> = ({ file }: FileDisplayI
         <div style={{ flex: 1 }}>
           <ItemTitle>{file.name}</ItemTitle>
           <ItemDetails>
-            {channel.isChannel ? 'Posted' : 'Shared'} {format(fromUnixTime(file.created), 'MMMM dd, yyyy - HH:mm')}{' '}
+            {channel.isChannel ? 'Posted' : 'Shared'}{' '}
+            {isValidDate ? format(fromUnixTime(file.created), 'MMMM dd, yyyy - HH:mm') : null}{' '}
             {channel.isChannel ? `in #${channel.name}` : `with ${channel.name}`}
           </ItemDetails>
         </div>

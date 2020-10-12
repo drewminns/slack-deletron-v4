@@ -52,7 +52,7 @@ export default function useDeleteFiles() {
         setApplicationNoticeState({ active: true, value: 'Error Deleting File - File Not Found', type: 'error' })
       }
     } catch (error) {
-      captureException(error)
+      // captureException(error)
       if (error === 'file_not_found') {
         setApplicationNoticeState({ active: true, value: 'Error Deleting File - File Not Found', type: 'error' })
       } else {
@@ -79,7 +79,7 @@ export default function useDeleteFiles() {
         }
         await wait(500)
       } catch (err) {
-        captureException(err)
+        // captureException(err)
         setApplicationNoticeState({ active: true, value: 'Error Deleting Files - Try Again', type: 'error' })
         setIsDeleting(false)
       }
