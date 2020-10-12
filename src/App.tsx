@@ -83,7 +83,6 @@ export const App: React.FC = () => {
   ) : (
     <>
       <Home errorString={applicationNotice.value} />
-      <button>send event</button>
       <Footer handleAboutVisibility={toggleAboutVisibility} />
       {aboutVisible && <About handleAboutVisibility={toggleAboutVisibility} />}
     </>
