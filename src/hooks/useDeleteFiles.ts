@@ -48,7 +48,6 @@ export default function useDeleteFiles() {
           type: 'success',
         })
       } else {
-        captureMessage(`useDeleteFiles :: deletedFile ${JSON.stringify(deletedFile)}`)
         setApplicationNoticeState({ active: true, value: 'Error Deleting File - File Not Found', type: 'error' })
       }
     } catch (error) {
@@ -73,7 +72,6 @@ export default function useDeleteFiles() {
           deletedItems.push(file.id)
           deletedFileSizeBatch += file.size
         } else {
-          captureMessage(`useDeleteFiles :: deleteAll ${JSON.stringify(deleteQueuedFileResponse)}`)
           setApplicationNoticeState({ active: true, value: 'Error Deleting Files - Try Again', type: 'error' })
           break
         }
